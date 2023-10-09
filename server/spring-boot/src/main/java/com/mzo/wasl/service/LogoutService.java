@@ -1,4 +1,4 @@
-package com.mzo.wasl.config;
+package com.mzo.wasl.service;
 
 import com.mzo.wasl.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
