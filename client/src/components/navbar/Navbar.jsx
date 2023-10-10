@@ -19,13 +19,13 @@ function Navbar() {
     };
   }, []);
 
-  const currentUser = null;
+  // const currentUser = null;
 
-  // const currentUser = {
-  //   id: 1,
-  //   username: "Anna",
-  //   isSeller: false,
-  // };
+  const currentUser = {
+    id: 1,
+    username: "Anna",
+    isSeller: true,
+  };
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -51,6 +51,9 @@ function Navbar() {
               <span>{currentUser?.username}</span>
               {open && (
                 <div className="options">
+                  <Link className="link" to="/profile">
+                    Profile
+                  </Link>
                   {currentUser.isSeller && (
                     <>
                       <Link className="link" to="/mygigs">
@@ -85,41 +88,6 @@ function Navbar() {
           )}
         </div>
       </div>
-      {(active || pathname !== "/") && (
-        <>
-          <hr />
-          <div className="menu">
-            <Link className="link menuLink" to="/">
-              Graphics & Design
-            </Link>
-            <Link className="link menuLink" to="/">
-              Video & Animation
-            </Link>
-            <Link className="link menuLink" to="/">
-              Writing & Translation
-            </Link>
-            <Link className="link menuLink" to="/">
-              AI Services
-            </Link>
-            <Link className="link menuLink" to="/">
-              Digital Marketing
-            </Link>
-            <Link className="link menuLink" to="/">
-              Music & Audio
-            </Link>
-            <Link className="link menuLink" to="/">
-              Programming & Tech
-            </Link>
-            <Link className="link menuLink" to="/">
-              Business
-            </Link>
-            <Link className="link menuLink" to="/">
-              Lifestyle
-            </Link>
-          </div>
-          <hr />
-        </>
-      )}
     </div>
   );
 }
