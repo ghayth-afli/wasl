@@ -1,40 +1,37 @@
 package com.mzo.wasl.model;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Entity
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "expvoy")
 public class ExpVoy {
-
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
+
     @Getter
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Getter
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 
     @Column(name="isExp")
     private boolean isExp;
 
-    public void setIdExpVoy(int idExpVoy) {
-        this.id = idExpVoy;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setUser(User user) {
@@ -51,17 +48,5 @@ public class ExpVoy {
 
     public void setExp(boolean exp) {
         isExp = exp;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Profile getProfile() {
-        return profile;
     }
 }

@@ -1,24 +1,22 @@
 package com.mzo.wasl.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profile{
-
+@Entity
+@Table(name = "profile")
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
-
     @Column(name="nom")
     private String nom;
 
@@ -37,12 +35,12 @@ public class Profile{
     @Column(name="language")
     private String language;
 
-    public int getIdProfil() {
+    public int getId() {
         return id;
     }
 
-    public void setIdProfil(int idProfil) {
-        this.id = idProfil;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNom() {

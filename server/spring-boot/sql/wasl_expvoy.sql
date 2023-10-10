@@ -24,9 +24,9 @@ DROP TABLE IF EXISTS `expvoy`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `expvoy` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `isExp` tinyint(1) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   `profile_id` int DEFAULT NULL,
+  `isExp` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `profile_id` (`profile_id`),
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-09  5:31:46
+-- Dump completed on 2023-10-10  5:51:11

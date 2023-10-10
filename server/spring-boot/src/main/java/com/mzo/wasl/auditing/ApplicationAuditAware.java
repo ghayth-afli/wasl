@@ -1,4 +1,4 @@
-package com.mzo.wasl.config;
+package com.mzo.wasl.auditing;
 
 import com.mzo.wasl.model.User;
 import org.springframework.data.domain.AuditorAware;
@@ -16,13 +16,13 @@ public class ApplicationAuditAware implements AuditorAware<Integer> {
                         .getContext()
                         .getAuthentication();
         if (authentication == null ||
-            !authentication.isAuthenticated() ||
+                !authentication.isAuthenticated() ||
                 authentication instanceof AnonymousAuthenticationToken
         ) {
             return Optional.empty();
         }
 
         User userPrincipal = (User) authentication.getPrincipal();
-        return Optional.ofNullable(userPrincipal.getIdUser());
+        return Optional.ofNullable(userPrincipal.getId());
     }
 }

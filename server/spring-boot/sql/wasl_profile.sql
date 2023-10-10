@@ -28,7 +28,7 @@ CREATE TABLE `profile` (
   `prenom` varchar(255) DEFAULT NULL,
   `country` varchar(255) DEFAULT NULL,
   `tel` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` text,
   `language` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-09  5:31:46
+-- Dump completed on 2023-10-10  5:51:11
