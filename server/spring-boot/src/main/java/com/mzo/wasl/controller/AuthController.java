@@ -1,12 +1,12 @@
 package com.mzo.wasl.controller;
 
-import com.mzo.wasl.model.ERole;
-import com.mzo.wasl.model.Role;
-import com.mzo.wasl.model.User;
+import com.mzo.wasl.model.*;
 import com.mzo.wasl.payload.request.LoginRequest;
 import com.mzo.wasl.payload.request.SignupRequest;
 import com.mzo.wasl.payload.response.JwtResponse;
 import com.mzo.wasl.payload.response.MessageResponse;
+import com.mzo.wasl.repository.ExpVoyRepository;
+import com.mzo.wasl.repository.ProfileRepository;
 import com.mzo.wasl.repository.RoleRepository;
 import com.mzo.wasl.repository.UserRepository;
 import com.mzo.wasl.security.jwt.JwtUtils;
@@ -36,6 +36,12 @@ public class AuthController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    ExpVoyRepository expvoyRepository;
+
+    @Autowired
+    ProfileRepository profileRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -82,7 +88,6 @@ public class AuthController {
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
-
         String strRole = signUpRequest.getRole();
 
         if (strRole == null) {
@@ -110,10 +115,11 @@ public class AuthController {
                 }
 
         }
-
-
+        Profile profile = new Profile();
+        ExpVoy expVoy = new ExpVoy(user,profile);
         userRepository.save(user);
-
+        profileRepository.save(profile);
+        expvoyRepository.save(expVoy);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }
