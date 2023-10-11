@@ -1,11 +1,10 @@
 package com.mzo.wasl.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mzo.wasl.dao.ExpVoyRepository;
 import com.mzo.wasl.dao.TokenRepository;
 import com.mzo.wasl.dao.UserRepository;
-import com.mzo.wasl.model.Token;
-import com.mzo.wasl.model.TokenType;
-import com.mzo.wasl.model.User;
+import com.mzo.wasl.model.*;
 import com.mzo.wasl.request.AuthenticationRequest;
 import com.mzo.wasl.request.RegisterRequest;
 import com.mzo.wasl.response.AuthenticationResponse;
@@ -25,22 +24,34 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository repository;
+    private final ExpVoyRepository expVoyRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request){
-        var user = User.builder()
+        /*var user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .img(request.getImg())
                 .role(request.getRole())
                 .build();
-        var savedUser = repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var savedUser = repository.save(user);*/
+        var expVoy = ExpVoy.builder()
+                .user(User.builder()
+                        .username(request.getUsername())
+                        .email(request.getEmail())
+                        .password(passwordEncoder.encode(request.getPassword()))
+                        .img(request.getImg())
+                        .role(Role.valueOf("REGULAR"))
+                        .build())
+                .build();
+        var savedUser = repository.save(expVoy.getUser());
+        expVoyRepository.save(expVoy);
+        var jwtToken = jwtService.generateToken(expVoy.getUser());
+        var refreshToken = jwtService.generateRefreshToken(expVoy.getUser());
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
@@ -49,12 +60,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
@@ -96,7 +102,7 @@ public class AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null ||!authHeader.startsWith("Bearer")) {
             return;
         }
         refreshToken = authHeader.substring(7);

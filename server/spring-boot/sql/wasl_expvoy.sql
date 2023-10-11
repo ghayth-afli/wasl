@@ -26,7 +26,7 @@ CREATE TABLE `expvoy` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `profile_id` int DEFAULT NULL,
-  `isExp` tinyint(1) DEFAULT NULL,
+  `is_exp` boolean DEFAULT true,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `profile_id` (`profile_id`),

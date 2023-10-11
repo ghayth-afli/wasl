@@ -19,7 +19,7 @@ public class WaslApplication {
 		SpringApplication.run(WaslApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
 	) {
@@ -41,5 +41,5 @@ public class WaslApplication {
 			System.out.println("Manager token: " + service.register(regular).getAccessToken());
 
 		};
-	}
+	}*/
 }
