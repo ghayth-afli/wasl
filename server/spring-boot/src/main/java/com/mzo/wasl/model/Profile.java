@@ -29,6 +29,14 @@ public class Profile {
 
     private String language ;
 
+    @Column(length = 20,name = "is_exp",columnDefinition = "boolean default true")
+    private boolean isExp;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
     public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -104,5 +112,21 @@ public class Profile {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public boolean isExp() {
+        return isExp;
+    }
+
+    public void setExp(boolean exp) {
+        isExp = exp;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

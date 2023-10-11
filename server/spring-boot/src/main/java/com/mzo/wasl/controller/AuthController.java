@@ -5,7 +5,6 @@ import com.mzo.wasl.payload.request.LoginRequest;
 import com.mzo.wasl.payload.request.SignupRequest;
 import com.mzo.wasl.payload.response.JwtResponse;
 import com.mzo.wasl.payload.response.MessageResponse;
-import com.mzo.wasl.repository.ExpVoyRepository;
 import com.mzo.wasl.repository.ProfileRepository;
 import com.mzo.wasl.repository.RoleRepository;
 import com.mzo.wasl.repository.UserRepository;
@@ -36,9 +35,6 @@ public class AuthController {
 
     @Autowired
     RoleRepository roleRepository;
-
-    @Autowired
-    ExpVoyRepository expvoyRepository;
 
     @Autowired
     ProfileRepository profileRepository;
@@ -116,10 +112,8 @@ public class AuthController {
 
         }
         Profile profile = new Profile();
-        ExpVoy expVoy = new ExpVoy(user,profile);
         userRepository.save(user);
         profileRepository.save(profile);
-        expvoyRepository.save(expVoy);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }
