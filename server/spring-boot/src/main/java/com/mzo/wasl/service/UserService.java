@@ -26,7 +26,7 @@ public class UserService {
         }
         // check if the two new passwords are the same
         if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
-            throw new IllegalStateException("Password are not the same");
+            throw new IllegalStateException("Password are not the same !");
         }
 
         // update the password
