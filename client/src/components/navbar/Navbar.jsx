@@ -19,20 +19,20 @@ function Navbar() {
     };
   }, []);
 
-  // const currentUser = null;
+  const currentUser = null;
 
-  const currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
-  };
+  // const currentUser = {
+  //   id: 1,
+  //   username: "Anna",
+  //   isSeller: true,
+  // };
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
           <Link className="link" to="/">
-            <span className="text">liverr</span>
+            <span className="text">Wassl</span>
           </Link>
           <span className="dot">.</span>
         </div>
