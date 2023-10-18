@@ -2,7 +2,7 @@ package com.mzo.wasl.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-
+import com.mzo.wasl.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +25,11 @@ public class Profile {
 
     private String city;
 
-    private String PhoneNumber;
+    private String phoneNumber;
 
     private String language ;
+
+    private String image;
 
     @Column(length = 20,name = "is_exp",columnDefinition = "boolean default true")
     private boolean isExp;
@@ -36,18 +38,24 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
-
-    public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language) {
+    public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language, String image, boolean isExp, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
         this.country = country;
         this.city = city;
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
         this.language = language;
+        this.image = image;
+        this.isExp = isExp;
+        this.user = user;
     }
 
     public Profile() {
+    }
+
+    public Profile(User user) {
+        this.user = user;
     }
 
     public Integer getId() {
@@ -99,11 +107,11 @@ public class Profile {
     }
 
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getLanguage() {
@@ -112,6 +120,14 @@ public class Profile {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public boolean isExp() {
