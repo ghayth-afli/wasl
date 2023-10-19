@@ -1,7 +1,6 @@
 package com.mzo.wasl.payload.request;
 
 public class ProfileRequest {
-    private Integer id;
     private String firstName;
     private String lastName;
     private String bio;
@@ -10,10 +9,6 @@ public class ProfileRequest {
     private String phoneNumber;
     private String language ;
     private String image;
-
-    public Integer getId() {
-        return id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -45,5 +40,37 @@ public class ProfileRequest {
 
     public String getImage() {
         return image;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

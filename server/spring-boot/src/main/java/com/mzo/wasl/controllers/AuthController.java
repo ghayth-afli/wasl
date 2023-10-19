@@ -1,14 +1,13 @@
-package com.mzo.wasl.controller;
+package com.mzo.wasl.controllers;
 
-import com.mzo.wasl.model.*;
+import com.mzo.wasl.models.*;
 import com.mzo.wasl.payload.request.LoginRequest;
 import com.mzo.wasl.payload.request.SignupRequest;
-import com.mzo.wasl.payload.response.JwtResponse;
 import com.mzo.wasl.payload.response.MessageResponse;
 import com.mzo.wasl.payload.response.UserInfoResponse;
-import com.mzo.wasl.repository.ProfileRepository;
-import com.mzo.wasl.repository.RoleRepository;
-import com.mzo.wasl.repository.UserRepository;
+import com.mzo.wasl.repositories.ProfileRepository;
+import com.mzo.wasl.repositories.RoleRepository;
+import com.mzo.wasl.repositories.UserRepository;
 import com.mzo.wasl.security.jwt.JwtUtils;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;

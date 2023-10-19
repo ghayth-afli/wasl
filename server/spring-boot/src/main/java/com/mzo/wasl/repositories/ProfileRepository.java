@@ -1,10 +1,7 @@
-package com.mzo.wasl.repository;
+package com.mzo.wasl.repositories;
 
-import com.mzo.wasl.model.Profile;
-import com.mzo.wasl.model.User;
+import com.mzo.wasl.models.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long>{
     Profile findByUserId(Long id);

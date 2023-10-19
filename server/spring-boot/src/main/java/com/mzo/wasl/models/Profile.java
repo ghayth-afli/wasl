@@ -1,10 +1,7 @@
-package com.mzo.wasl.model;
+package com.mzo.wasl.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import com.mzo.wasl.model.User;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "profile")

@@ -1,7 +1,7 @@
 package com.mzo.wasl.security.services;
 
-import com.mzo.wasl.model.User;
-import com.mzo.wasl.repository.UserRepository;
+import com.mzo.wasl.models.User;
+import com.mzo.wasl.repositories.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,9 +1,7 @@
 package com.mzo.wasl.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mzo.wasl.model.ERole;
-import com.mzo.wasl.model.Role;
-import com.mzo.wasl.model.User;
+import com.mzo.wasl.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,13 +1,10 @@
-package com.mzo.wasl.controller;
+package com.mzo.wasl.controllers;
 
-import com.mzo.wasl.model.Profile;
-import com.mzo.wasl.model.User;
+import com.mzo.wasl.models.Profile;
 import com.mzo.wasl.payload.request.ProfileRequest;
 import com.mzo.wasl.payload.response.ProfileResponse;
-import com.mzo.wasl.repository.ProfileRepository;
-import com.mzo.wasl.security.jwt.JwtUtils;
+import com.mzo.wasl.repositories.ProfileRepository;
 import com.mzo.wasl.security.services.UserDetailsImpl;
-import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class ProfileController {
     @Autowired
     private ProfileRepository profileRepository;

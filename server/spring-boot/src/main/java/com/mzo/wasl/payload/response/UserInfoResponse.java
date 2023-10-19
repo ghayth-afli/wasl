@@ -1,7 +1,5 @@
 package com.mzo.wasl.payload.response;
 
-import com.mzo.wasl.model.Role;
-
 public class UserInfoResponse {
 
     private Long id;

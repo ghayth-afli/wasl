@@ -1,7 +1,5 @@
 package com.mzo.wasl.payload.response;
 
-import jakarta.validation.constraints.Size;
-
 public class ProfileResponse {
     private Integer id;
     private String firstName;
@@ -59,5 +57,41 @@ public class ProfileResponse {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

@@ -21,13 +21,13 @@ import org.springframework.web.util.WebUtils;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${bezkoder.app.jwtSecret}")
+    @Value("======================wasl=Spring===========================")
     private String jwtSecret;
 
-    @Value("${bezkoder.app.jwtExpirationMs}")
+    @Value("86400")
     private int jwtExpirationMs;
 
-    @Value("${bezkoder.app.jwtCookieName}")
+    @Value("wasl")
     private String jwtCookie;
 
     public String getJwtFromCookies(HttpServletRequest request) {
