@@ -21,7 +21,7 @@ import org.springframework.web.util.WebUtils;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("======================wasl=Spring===========================")
+    @Value("==========================waslsflkdsjhfieo==========================")
     private String jwtSecret;
 
     @Value("86400")
