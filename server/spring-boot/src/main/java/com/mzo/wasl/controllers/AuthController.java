@@ -1,10 +1,13 @@
 package com.mzo.wasl.controllers;
 
-import com.mzo.wasl.models.*;
+import com.mzo.wasl.models.ERole;
+import com.mzo.wasl.models.Profile;
+import com.mzo.wasl.models.Role;
+import com.mzo.wasl.models.User;
 import com.mzo.wasl.payload.request.LoginRequest;
 import com.mzo.wasl.payload.request.SignupRequest;
+import com.mzo.wasl.payload.response.JwtResponse;
 import com.mzo.wasl.payload.response.MessageResponse;
-import com.mzo.wasl.payload.response.UserInfoResponse;
 import com.mzo.wasl.repositories.ProfileRepository;
 import com.mzo.wasl.repositories.RoleRepository;
 import com.mzo.wasl.repositories.UserRepository;
@@ -12,8 +15,6 @@ import com.mzo.wasl.security.jwt.JwtUtils;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,24 +51,22 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
-
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles.get(0)));
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles.toString()));
     }
 
     @PostMapping("/signup")
@@ -96,10 +95,4 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    @PostMapping("/signout")
-    public ResponseEntity<?> logoutUser() {
-        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new MessageResponse("You've been signed out!"));
-    }
 }

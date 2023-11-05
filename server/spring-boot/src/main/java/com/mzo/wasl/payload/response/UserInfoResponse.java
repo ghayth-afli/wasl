@@ -13,7 +13,6 @@ public class UserInfoResponse {
 
     private String password;
 
-    //every user has a role
 
     private String role;
 

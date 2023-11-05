@@ -34,7 +34,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User user) {
         Set<GrantedAuthority> authorities = new HashSet<>();
-            authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
 
         return new UserDetailsImpl(
                 user.getId(),
@@ -96,4 +96,6 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
+
 }
+
