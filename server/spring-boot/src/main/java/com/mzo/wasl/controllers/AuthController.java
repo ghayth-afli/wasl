@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -50,9 +51,18 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        String username=null;
+        if (userRepository.existsByEmail(loginRequest.getEmail())){
+            Optional<User> user = userRepository.findByEmail(loginRequest.getEmail());
+            username=user.get().getUsername();
+        } else if (userRepository.existsByUsername(loginRequest.getEmail())) {
+            username=loginRequest.getEmail();
+        }else {
+            return ResponseEntity.ok(new MessageResponse("No account exists with the provided email address/username"));
+        }
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(username, loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
