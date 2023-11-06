@@ -1,4 +1,4 @@
-package com.mzo.wasl.models;
+package com.mzo.wasl.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

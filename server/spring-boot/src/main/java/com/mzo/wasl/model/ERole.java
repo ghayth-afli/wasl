@@ -1,4 +1,4 @@
-package com.mzo.wasl.models;
+package com.mzo.wasl.model;
 
 public enum ERole {
     ROLE_REGULAR,

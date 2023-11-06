@@ -1,7 +1,10 @@
-package com.mzo.wasl.models;
+package com.mzo.wasl.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "profile")
@@ -22,12 +25,15 @@ public class Profile {
 
     private String city;
 
-    private String phoneNumber;
+    private String PhoneNumber;
 
     private String language ;
 
+<<<<<<< HEAD:server/spring-boot/src/main/java/com/mzo/wasl/models/Profile.java
     private String image;
 
+=======
+>>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl):server/spring-boot/src/main/java/com/mzo/wasl/model/Profile.java
     @Column(length = 20,name = "is_exp",columnDefinition = "boolean default true")
     private boolean isExp;
 
@@ -35,24 +41,28 @@ public class Profile {
     @JoinColumn(name = "user_id")
     private User user;
 
+<<<<<<< HEAD:server/spring-boot/src/main/java/com/mzo/wasl/models/Profile.java
     public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language, String image, boolean isExp, User user) {
+=======
+
+    public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language) {
+>>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl):server/spring-boot/src/main/java/com/mzo/wasl/model/Profile.java
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
         this.country = country;
         this.city = city;
-        this.phoneNumber = phoneNumber;
+        PhoneNumber = phoneNumber;
         this.language = language;
+<<<<<<< HEAD:server/spring-boot/src/main/java/com/mzo/wasl/models/Profile.java
         this.image = image;
         this.isExp = isExp;
         this.user = user;
+=======
+>>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl):server/spring-boot/src/main/java/com/mzo/wasl/model/Profile.java
     }
 
     public Profile() {
-    }
-
-    public Profile(User user) {
-        this.user = user;
     }
 
     public Integer getId() {
@@ -104,11 +114,11 @@ public class Profile {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return PhoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        PhoneNumber = phoneNumber;
     }
 
     public String getLanguage() {
@@ -119,10 +129,11 @@ public class Profile {
         this.language = language;
     }
 
-    public String getImage() {
-        return image;
+    public boolean isExp() {
+        return isExp;
     }
 
+<<<<<<< HEAD:server/spring-boot/src/main/java/com/mzo/wasl/models/Profile.java
     public void setImage(String image) {
         this.image = image;
     }
@@ -131,6 +142,8 @@ public class Profile {
         return isExp;
     }
 
+=======
+>>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl):server/spring-boot/src/main/java/com/mzo/wasl/model/Profile.java
     public void setExp(boolean exp) {
         isExp = exp;
     }

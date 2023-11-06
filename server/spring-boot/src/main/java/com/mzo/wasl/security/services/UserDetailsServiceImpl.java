@@ -1,8 +1,14 @@
 package com.mzo.wasl.security.services;
 
+<<<<<<< HEAD
 import com.mzo.wasl.models.User;
 import com.mzo.wasl.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+=======
+import com.mzo.wasl.model.User;
+import com.mzo.wasl.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
+>>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl)
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,5 +28,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return UserDetailsImpl.build(user);
     }
-}
 
+}

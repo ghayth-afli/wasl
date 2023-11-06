@@ -1,7 +1,13 @@
 package com.mzo.wasl.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+<<<<<<< HEAD
 import com.mzo.wasl.models.User;
+=======
+import com.mzo.wasl.model.ERole;
+import com.mzo.wasl.model.Role;
+import com.mzo.wasl.model.User;
+>>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl)
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +40,11 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User user) {
         Set<GrantedAuthority> authorities = new HashSet<>();
+<<<<<<< HEAD
         authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
+=======
+            authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
+>>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl)
 
         return new UserDetailsImpl(
                 user.getId(),
@@ -96,6 +106,4 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
-
 }
-

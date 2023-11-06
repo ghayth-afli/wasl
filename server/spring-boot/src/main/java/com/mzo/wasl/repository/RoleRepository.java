@@ -1,7 +1,7 @@
-package com.mzo.wasl.repositories;
+package com.mzo.wasl.repository;
 
-import com.mzo.wasl.models.ERole;
-import com.mzo.wasl.models.Role;
+import com.mzo.wasl.model.ERole;
+import com.mzo.wasl.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
