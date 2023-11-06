@@ -1,4 +1,4 @@
-package com.mzo.wasl.controller;
+package com.mzo.wasl.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,10 +21,10 @@ public class TestController {
         return "Regular Content.";
     }
 
-    @GetMapping("/support")
-    @PreAuthorize("hasRole('REGULAR')")
+    @GetMapping("/traveler")
+    @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public String moderatorAccess() {
-        return "Support Board.";
+        return "Traveler Board.";
     }
 
     @GetMapping("/admin")

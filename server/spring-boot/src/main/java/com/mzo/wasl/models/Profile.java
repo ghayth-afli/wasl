@@ -1,10 +1,7 @@
-package com.mzo.wasl.model;
+package com.mzo.wasl.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "profile")
@@ -25,29 +22,37 @@ public class Profile {
 
     private String city;
 
-    private String PhoneNumber;
+    private String phoneNumber;
 
     private String language ;
 
-    @Column(length = 20,name = "is_exp",columnDefinition = "boolean default true")
-    private boolean isExp;
+    private String image;
+
+    @Column(length = 20,name = "is_traveler",columnDefinition = "boolean default false")
+    private boolean isTraveler;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-
-    public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language) {
+    public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language, String image, boolean isTraveler, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
         this.country = country;
         this.city = city;
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
         this.language = language;
+        this.image = image;
+        this.isTraveler = isTraveler;
+        this.user = user;
     }
 
     public Profile() {
+    }
+
+    public Profile(User user) {
+        this.user = user;
     }
 
     public Integer getId() {
@@ -99,11 +104,11 @@ public class Profile {
     }
 
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getLanguage() {
@@ -114,12 +119,20 @@ public class Profile {
         this.language = language;
     }
 
-    public boolean isExp() {
-        return isExp;
+    public String getImage() {
+        return image;
     }
 
-    public void setExp(boolean exp) {
-        isExp = exp;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isTraveler() {
+        return this.isTraveler;
+    }
+
+    public void setIsTraveler(boolean isTraveler) {
+        this.isTraveler = isTraveler;
     }
 
     public User getUser() {

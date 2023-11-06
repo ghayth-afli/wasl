@@ -7,7 +7,6 @@ public class JwtResponse {
     private String username;
     private String email;
     private String role;
-
     public JwtResponse(String accessToken, Long id, String username, String email, String role) {
         this.token = accessToken;
         this.id = id;

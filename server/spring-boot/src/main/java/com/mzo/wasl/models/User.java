@@ -1,4 +1,4 @@
-package com.mzo.wasl.model;
+package com.mzo.wasl.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -80,4 +80,5 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
 }
