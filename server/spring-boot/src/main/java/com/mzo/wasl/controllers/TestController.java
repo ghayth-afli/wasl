@@ -21,10 +21,10 @@ public class TestController {
         return "Regular Content.";
     }
 
-    @GetMapping("/traveler")
-    @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
+    @GetMapping("/support")
+    @PreAuthorize("hasRole('REGULAR')")
     public String moderatorAccess() {
-        return "Traveler Board.";
+        return "Support Board.";
     }
 
     @GetMapping("/admin")
