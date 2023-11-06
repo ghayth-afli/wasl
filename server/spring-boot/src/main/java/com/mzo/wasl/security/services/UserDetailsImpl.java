@@ -1,18 +1,9 @@
 package com.mzo.wasl.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-<<<<<<< HEAD
 import com.mzo.wasl.models.User;
-<<<<<<< HEAD
-=======
-import com.mzo.wasl.model.ERole;
-import com.mzo.wasl.model.Role;
-import com.mzo.wasl.model.User;
->>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl)
-=======
 import com.mzo.wasl.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> parent of b170955 (Revert "Added switch functionality")
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,15 +36,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public static UserDetailsImpl build(User user) {
         Set<GrantedAuthority> authorities = new HashSet<>();
-<<<<<<< HEAD
         authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
-<<<<<<< HEAD
-=======
-            authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
->>>>>>> parent of e3f7f19 (Merge branch 'main' of https://github.com/belhajManel/wasl)
-
-=======
->>>>>>> parent of b170955 (Revert "Added switch functionality")
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
@@ -113,4 +96,6 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
+
 }
+
