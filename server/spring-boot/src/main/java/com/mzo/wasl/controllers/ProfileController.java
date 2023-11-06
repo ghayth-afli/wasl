@@ -23,7 +23,8 @@ public class ProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         Profile profile =profileRepository.findByUserId(user.getId());
-        return ResponseEntity.ok(new ProfileResponse(profile.getId(),profile.getFirstName(),profile.getLastName(),profile.getBio(),profile.getCountry(),profile.getCity(),profile.getPhoneNumber(),profile.getLanguage() ,profile.getImage()));
+        return ResponseEntity.ok(user);
+        //return ResponseEntity.ok(new ProfileResponse(profile.getId(),profile.getFirstName(),profile.getLastName(),profile.getBio(),profile.getCountry(),profile.getCity(),profile.getPhoneNumber(),profile.getLanguage() ,profile.getImage()));
     }
 
 
