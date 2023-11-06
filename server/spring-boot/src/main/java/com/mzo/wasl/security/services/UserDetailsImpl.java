@@ -2,6 +2,8 @@ package com.mzo.wasl.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mzo.wasl.models.User;
+import com.mzo.wasl.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +37,6 @@ public class UserDetailsImpl implements UserDetails {
     public static UserDetailsImpl build(User user) {
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
-
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
@@ -43,7 +44,6 @@ public class UserDetailsImpl implements UserDetails {
                 user.getPassword(),
                 authorities);
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

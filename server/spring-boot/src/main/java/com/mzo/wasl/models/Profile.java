@@ -28,14 +28,14 @@ public class Profile {
 
     private String image;
 
-    @Column(length = 20,name = "is_exp",columnDefinition = "boolean default true")
-    private boolean isExp;
+    @Column(length = 20,name = "is_traveler",columnDefinition = "boolean default false")
+    private boolean isTraveler;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language, String image, boolean isExp, User user) {
+    public Profile(String firstName, String lastName, String bio, String country, String city, String phoneNumber, String language, String image, boolean isTraveler, User user) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
@@ -44,7 +44,7 @@ public class Profile {
         this.phoneNumber = phoneNumber;
         this.language = language;
         this.image = image;
-        this.isExp = isExp;
+        this.isTraveler = isTraveler;
         this.user = user;
     }
 
@@ -127,12 +127,12 @@ public class Profile {
         this.image = image;
     }
 
-    public boolean isExp() {
-        return isExp;
+    public boolean isTraveler() {
+        return this.isTraveler;
     }
 
-    public void setExp(boolean exp) {
-        isExp = exp;
+    public void setIsTraveler(boolean isTraveler) {
+        this.isTraveler = isTraveler;
     }
 
     public User getUser() {
