@@ -1,65 +1,60 @@
 import React from "react";
 import "./Add.scss";
+import { Button, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { styled } from '@mui/material/styles';
 
 const Add = () => {
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
   return (
+   <>
     <div className="add">
       <div className="container">
         <h1>Add New Gig</h1>
         <div className="sections">
           <div className="info">
-            <label htmlFor="">Title</label>
-            <input
-              type="text"
-              placeholder="e.g. I will do something I'm really good at"
-            />
-            <label htmlFor="">Category</label>
-            <select name="cats" id="cats">
-              <option value="design">Design</option>
-              <option value="web">Web Development</option>
-              <option value="animation">Animation</option>
-              <option value="music">Music</option>
-            </select>
-            <label htmlFor="">Cover Image</label>
-            <input type="file" />
-            <label htmlFor="">Upload Images</label>
-            <input type="file" multiple />
-            <label htmlFor="">Description</label>
-            <textarea
-              name=""
-              id=""
-              placeholder="Brief descriptions to introduce your service to customers"
-              cols="0"
-              rows="16"
-            ></textarea>
-            <button>Create</button>
+            <TextField label="Title" placeholder="e.g. I will do something I'm really good at" fullWidth />
+            <FormControl fullWidth>
+              <InputLabel>Category</InputLabel>
+              <Select>
+                <MenuItem value="design">Design</MenuItem>
+                <MenuItem value="web">Web Development</MenuItem>
+                <MenuItem value="animation">Animation</MenuItem>
+                <MenuItem value="music">Music</MenuItem>
+              </Select>
+            </FormControl>
+            <InputLabel>Images</InputLabel>
+            <Button component="label" variant="outlined" startIcon={<CloudUploadIcon />} >
+            Upload file
+            <VisuallyHiddenInput type="file" />
+          </Button>
+            <input type="file"  />
+            <TextField label="Description" placeholder="Brief descriptions to introduce your service to customers" multiline rows={16} fullWidth />
+            <Button variant="contained">Create</Button>
           </div>
           <div className="details">
-            <label htmlFor="">Service Title</label>
-            <input type="text" placeholder="e.g. One-page web design" />
-            <label htmlFor="">Short Description</label>
-            <textarea
-              name=""
-              id=""
-              placeholder="Short description of your service"
-              cols="30"
-              rows="10"
-            ></textarea>
-            <label htmlFor="">Delivery Time (e.g. 3 days)</label>
-            <input type="number" />
-            <label htmlFor="">Revision Number</label>
-            <input type="number" />
-            <label htmlFor="">Add Features</label>
-            <input type="text" placeholder="e.g. page design" />
-            <input type="text" placeholder="e.g. file uploading" />
-            <input type="text" placeholder="e.g. setting up a domain" />
-            <input type="text" placeholder="e.g. hosting" />
-            <label htmlFor="">Price</label>
-            <input type="number" />
+            <TextField label="Depart" placeholder="e.g. Tunisie Carthage" fullWidth />
+            <TextField label="Destination" placeholder="e.g. Germany Berlin" fullWidth />
+            <TextField label="Date" type="date" fullWidth />
+            <TextField label="Time" type="time" fullWidth />
+            <TextField label="Delivery Time (e.g. 3 days)" type="number" fullWidth />
+            <TextField label="Capacity" placeholder="e.g. 5 Kg" fullWidth />
+            <TextField label="Price" type="number" fullWidth />
           </div>
         </div>
       </div>
     </div>
+   </>
   );
 };
 
