@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api")
 public class OfferController {
     @Autowired
@@ -28,6 +29,7 @@ public class OfferController {
     public ResponseEntity<?> getAllOffers() {
         return ResponseEntity.ok(offerRepository.findAll());
     }
+
     @GetMapping("/myoffers")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> getAllMyOffers() {
@@ -65,11 +67,11 @@ public class OfferController {
 
     @PutMapping("/offers/{id}")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
-    public ResponseEntity<?> UpdateOffer(@Valid @RequestBody OfferRequest offerRequest,@PathVariable Long id){
+    public ResponseEntity<?> UpdateOffer(@Valid @RequestBody OfferRequest offerRequest, @PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
-        if (!currentTraveler.getOffers().contains(offerRepository.findById(id).get())){
+        if (!currentTraveler.getOffers().contains(offerRepository.findById(id).get())) {
             return ResponseEntity.ok(new MessageResponse("This offer does not belong to you"));
         }
         Offer offer = offerRepository.findById(id).get();
@@ -88,11 +90,11 @@ public class OfferController {
 
     @DeleteMapping("/offers/{id}")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
-    public ResponseEntity<?> deleteOffer(@PathVariable Long id){
+    public ResponseEntity<?> deleteOffer(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
-        if (!currentTraveler.getOffers().contains(offerRepository.findById(id).get())){
+        if (!currentTraveler.getOffers().contains(offerRepository.findById(id).get())) {
             return ResponseEntity.ok(new MessageResponse("This offer does not belong to you"));
         }
         offerRepository.deleteById(id);
