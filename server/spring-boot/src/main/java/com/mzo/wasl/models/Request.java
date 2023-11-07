@@ -2,89 +2,52 @@ package com.mzo.wasl.models;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "requests")
 public class Request {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String description;
+
+    @Column(name = "total_price")
     private Double totalPrice;
+
     private Double weight;
+
+    @Column(name = "start_request")
     private Date startRequest;
+
+    @Column(name = "end_request")
     private Date endRequest;
+
     @Enumerated(EnumType.STRING)
     private EStatus status;
-    public Request() {}
-    public Request(String description, Double totalPrice, Double weight, Date starDate, Date endRequest) {
-        this.description=description;
-        this.totalPrice=totalPrice;
-        this.weight=weight;
-        this.startRequest=starDate;
-        this.endRequest=endRequest;
-    }
 
-    public Long getId() {
-        return this.id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "offer_id")
+    private Offer offer;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private Sender sender;
 
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
+    public Request(String description, Double totalPrice, Double weight, Date startRequest, Date endRequest, EStatus status, Offer offer) {
         this.description = description;
-    }
-
-    public Double getTotalPrice() {
-        return this.totalPrice;
-    }
-
-    public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public Double getWeight() {
-        return this.weight;
-    }
-
-    public void setWeight(Double weight) {
         this.weight = weight;
-    }
-
-    public Date getStartRequest() {
-        return this.startRequest;
-    }
-
-    public void setStartRequest(Date startRequest) {
         this.startRequest = startRequest;
-    }
-
-    public Date getEndRequest() {
-        return this.endRequest;
-    }
-
-    public void setEndRequest(Date endRequest) {
         this.endRequest = endRequest;
-    }
-
-    public EStatus getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(EStatus status) {
         this.status = status;
+        this.offer = offer;
     }
-
-    }
+}
