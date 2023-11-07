@@ -1,13 +1,27 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Gigs.scss";
 import { gigs } from "../../data";
 import GigCard from "../../components/gigCard/GigCard";
+import { hosts } from "../../const.js";
 
 function Gigs() {
   const [sort, setSort] = useState("sales");
   const [open, setOpen] = useState(false);
+  const [gigs, setGigs] = useState([]);
   const minRef = useRef();
   const maxRef = useRef();
+
+  useEffect(() => {
+    fetch(`${hosts.backend}/api/offers`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + localStorage.getItem("token") || null,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setGigs(data));
+  }, []);
 
   const reSort = (type) => {
     setSort(type);
