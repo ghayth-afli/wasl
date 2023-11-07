@@ -58,15 +58,19 @@ function Login() {
           email: data.get("email"),
           password: data.get("password"),
         }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
       })
-        .then((res) => res.json())
+        .then((res) =>{
+          return res.json();
+        })
         .then((data) => {
-          if (data.message) {
-            console.log(data.message);
-            setError(data.message);
+          console.log("data", data);
+          if (!data.accessToken) {
+            setError("Invalid credentials");
             return;
           } else {
-            console.log(data);
             localStorage.setItem("token", data.accessToken);
             navigate("/gigs");
           }

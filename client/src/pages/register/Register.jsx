@@ -41,13 +41,7 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      confirmPassword: data.get("confirmPassword"),
-    });
+    
 
     if (data.get("password") !== data.get("confirmPassword")) {
       alert("Passwords do not match");
@@ -66,15 +60,11 @@ export default function SignUp() {
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
-        console.log("Response received", res.status);
         return res.json();
       })
       .then((json) => {
-        console.log(json);
-        if (json.success) {
-          const token = json.token;
-          localStorage.setItem("token", token);
-          navigate("/gigs");
+        if (json.message === "User registered successfully!") {
+          navigate("/login");
         } else {
           setError(json.message);
         }
