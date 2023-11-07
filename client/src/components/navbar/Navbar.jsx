@@ -30,13 +30,13 @@ function Navbar() {
   }, []);
   
   // const currentUser = null;
-  var currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
-  };
+  var currentUser
   if (token) {
-    console.log("token exists");
+     currentUser = {
+      id: 1,
+      username: "Anna",
+      isSeller: true,
+    };
   } else {
     console.log("token does not exist");
     currentUser = null;
@@ -56,8 +56,7 @@ function Navbar() {
           <Link className="link" to="/gigs">
             <span>Explore</span>
           </Link>
-          <span>English</span>
-          {/* {!currentUser?.isSeller && <span>Become a Seller</span>} */}
+          {!currentUser?.isSeller && <span>Become a Seller</span>}
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
               <img
