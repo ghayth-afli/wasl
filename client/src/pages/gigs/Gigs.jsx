@@ -15,12 +15,15 @@ function Gigs() {
     fetch(`${hosts.backend}/api/offers`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + localStorage.getItem("token") || null,
+        "Content-Type": "Application/json ; charset=UTF-8",
+        "Authorization": "Bearer " + localStorage.getItem("token") ,
       },
     })
       .then((res) => res.json())
-      .then((data) => setGigs(data));
+      .then((data) => {
+        console.log(data);
+        setGigs(data);
+      });
   }, []);
 
   const reSort = (type) => {
@@ -36,10 +39,11 @@ function Gigs() {
   return (
     <div className="gigs">
       <div className="container">
-        <span className="breadcrumbs">Liverr Graphics & Design </span>
-        <h1>AI Artists</h1>
+        <span className="breadcrumbs">Transportation Offers</span>
+        <h1>Tranportation offers</h1>
         <p>
-          Explore the boundaries of art and technology with Liverr's AI artists
+          Explore the best transportation offers on Liverr. Find services to
+          help you get around safely and comfortably.{" "}
         </p>
         <div className="menu">
           <div className="left">
