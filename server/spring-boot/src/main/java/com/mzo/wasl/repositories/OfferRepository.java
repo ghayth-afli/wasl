@@ -1,9 +1,9 @@
 package com.mzo.wasl.repositories;
 
-import com.mzo.wasl.models.Sender;
+import com.mzo.wasl.models.Offer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SenderRepository extends JpaRepository<Sender,Long> {
+public interface OfferRepository extends JpaRepository<Offer,Long> {
 }

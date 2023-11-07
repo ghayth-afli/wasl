@@ -2,12 +2,13 @@ package com.mzo.wasl.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -33,12 +34,11 @@ public class Offer {
     @OneToMany(mappedBy = "offer")
     @JsonIgnore
     private List<Request> requests;
-
     @ManyToOne
     @JoinColumn(name = "traveler_id")
     private Traveler traveler;
 
-    public Offer(String title, String description, String depart, String destination, Date date, Time time, Double price, Double capacity, Double remainingCapacity, String image, List<Request> requests) {
+    public Offer(String title, String description, String depart, String destination, Date date, Time time, Double price, Double capacity, Double remainingCapacity, String image) {
         this.title = title;
         this.description = description;
         this.depart = depart;
@@ -49,6 +49,5 @@ public class Offer {
         this.capacity = capacity;
         this.remainingCapacity = remainingCapacity;
         this.image = image;
-        this.requests = requests;
     }
 }

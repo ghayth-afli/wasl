@@ -1,16 +1,11 @@
 package com.mzo.wasl.controllers;
 
-import com.mzo.wasl.models.ERole;
-import com.mzo.wasl.models.Profile;
-import com.mzo.wasl.models.Role;
-import com.mzo.wasl.models.User;
+import com.mzo.wasl.models.*;
 import com.mzo.wasl.payload.request.LoginRequest;
 import com.mzo.wasl.payload.request.SignupRequest;
 import com.mzo.wasl.payload.response.JwtResponse;
 import com.mzo.wasl.payload.response.MessageResponse;
-import com.mzo.wasl.repositories.ProfileRepository;
-import com.mzo.wasl.repositories.RoleRepository;
-import com.mzo.wasl.repositories.UserRepository;
+import com.mzo.wasl.repositories.*;
 import com.mzo.wasl.security.jwt.JwtUtils;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -49,6 +44,10 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    SenderRepository senderRepository;
+    @Autowired
+    TravelerRepository travelerRepository;
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         String username=null;
@@ -101,7 +100,10 @@ public class AuthController {
         Profile profile = new Profile(user);
         userRepository.save(user);
         profileRepository.save(profile);
-
+        Sender sender =new Sender(user);
+        senderRepository.save(sender);
+        Traveler traveler =new Traveler(user);
+        travelerRepository.save(traveler);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
