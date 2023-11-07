@@ -38,7 +38,7 @@ public class Offer {
     @JoinColumn(name = "traveler_id")
     private Traveler traveler;
 
-    public Offer(String title, String description, String depart, String destination, Date date, Time time, Double price, Double capacity, Double remainingCapacity, String image) {
+    public Offer(String title, String description, String depart, String destination, Date date, Time time, Double price, Double capacity, Double remainingCapacity, String image, Traveler traveler) {
         this.title = title;
         this.description = description;
         this.depart = depart;
@@ -49,5 +49,6 @@ public class Offer {
         this.capacity = capacity;
         this.remainingCapacity = remainingCapacity;
         this.image = image;
+        this.traveler = traveler;
     }
 }
