@@ -11,10 +11,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -23,9 +22,6 @@ public class OfferController {
     OfferRepository offerRepository;
     @Autowired
     TravelerRepository travelerRepository;
-    private UserDetailsImpl currentUser = (UserDetailsImpl) (SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
-    private Traveler currentTraveler = travelerRepository.findByUserId(currentUser.getId());
-    private List<Offer> currentUserOffers = offerRepository.findOffersByTravelerId(currentTraveler.getId());
 
     @GetMapping("/offers")
     @PreAuthorize("hasRole('REGULAR')")
@@ -35,7 +31,10 @@ public class OfferController {
     @GetMapping("/myoffers")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> getAllMyOffers() {
-        return ResponseEntity.ok(currentUserOffers);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
+        return ResponseEntity.ok(currentTraveler.getOffers());
     }
 
     @GetMapping("/offers/{id}")
@@ -47,6 +46,9 @@ public class OfferController {
     @PostMapping("/offers")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> addOffer(@Valid @RequestBody OfferRequest offerRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
         offerRepository.save(new Offer(offerRequest.getTitle(),
                 offerRequest.getDescription(),
                 offerRequest.getDepart(),
@@ -64,7 +66,10 @@ public class OfferController {
     @PutMapping("/offers/{id}")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> UpdateOffer(@Valid @RequestBody OfferRequest offerRequest,@PathVariable Long id){
-        if (!currentUserOffers.contains(offerRepository.findById(id))){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
+        if (!currentTraveler.getOffers().contains(offerRepository.findById(id).get())){
             return ResponseEntity.ok(new MessageResponse("This offer does not belong to you"));
         }
         Offer offer = offerRepository.findById(id).get();
@@ -84,7 +89,10 @@ public class OfferController {
     @DeleteMapping("/offers/{id}")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> deleteOffer(@PathVariable Long id){
-        if (!currentUserOffers.contains(offerRepository.findById(id))){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
+        if (!currentTraveler.getOffers().contains(offerRepository.findById(id).get())){
             return ResponseEntity.ok(new MessageResponse("This offer does not belong to you"));
         }
         offerRepository.deleteById(id);

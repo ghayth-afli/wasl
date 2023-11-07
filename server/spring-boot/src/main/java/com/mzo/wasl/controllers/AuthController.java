@@ -48,6 +48,9 @@ public class AuthController {
     SenderRepository senderRepository;
     @Autowired
     TravelerRepository travelerRepository;
+
+    @Autowired
+    OfferRepository offerRepository;
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         String username=null;
