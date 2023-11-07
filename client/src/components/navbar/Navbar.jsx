@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
-
   const { pathname } = useLocation();
+
+  const token = localStorage.getItem("token") || null;
 
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
+  };
+
+  const handleLogout = () => {
+    console.log("user logout logic");
+    localStorage.removeItem("token");
+    navigate("/");
+
   };
 
   useEffect(() => {
@@ -18,14 +28,20 @@ function Navbar() {
       window.removeEventListener("scroll", isActive);
     };
   }, []);
-
+  
   // const currentUser = null;
-
-  const currentUser = {
+  var currentUser = {
     id: 1,
     username: "Anna",
     isSeller: true,
   };
+  if (token) {
+    console.log("token exists");
+  } else {
+    console.log("token does not exist");
+    currentUser = null;
+  }
+  
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -70,7 +86,7 @@ function Navbar() {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="link" to="/">
+                  <Link className="link" onClick={handleLogout}>
                     Logout
                   </Link>
                 </div>
