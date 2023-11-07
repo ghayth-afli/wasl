@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { hosts } from "../../const.js";
 
 function Copyright(props) {
   return (
@@ -34,13 +36,49 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const [error, setError] = React.useState(null);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
       password: data.get("password"),
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
+      confirmPassword: data.get("confirmPassword"),
     });
+
+    if (data.get("password") !== data.get("confirmPassword")) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    fetch(`${hosts.backend}/api/auth/signup`, {
+      method: "POST",
+      body: JSON.stringify({
+        email: data.get("email"),
+        password: data.get("password"),
+        // firstName: data.get("firstName"),
+        // lastName: data.get("lastName"),
+        username: data.get("firstName") + " " + data.get("lastName"),
+      }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        console.log("Response received", res.status);
+        return res.json();
+      })
+      .then((json) => {
+        console.log(json);
+        if (json.success) {
+          const token = json.token;
+          localStorage.setItem("token", token);
+          navigate("/gigs");
+        } else {
+          setError(json.message);
+        }
+      });
   };
 
   return (
@@ -99,18 +137,7 @@ export default function SignUp() {
                   autoComplete="email"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  InputLabelProps={{ shrink: true }}
-                  required
-                  fullWidth
-                  name="image"
-                  label="image"
-                  type="file"
-                  id="image"
-                  autoComplete="image"
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -122,9 +149,13 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="becomeSeller" color="primary" />}
-                  label="I want to become a seller"
+                <TextField
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirmPassword"
+                  autoComplete="new-password"
                 />
               </Grid>
             </Grid>
@@ -145,6 +176,13 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
+        {error && (
+          <Grid item xs={12}>
+            <Typography variant="body2" color="error">
+              {error}
+            </Typography>
+          </Grid>
+        )}
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>

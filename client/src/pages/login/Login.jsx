@@ -17,6 +17,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { hosts } from "../../const.js";
 
 function Copyright(props) {
   return (
@@ -39,17 +40,37 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 function Login() {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const navigate = useNavigate();
   const [error, setError] = React.useState(null);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(e.target);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+    });
     try {
       console.log("user login logic");
-      // const res = await newRequest.post("/auth/login", { username, password });
-      // localStorage.setItem("currentUser", JSON.stringify(res.data));
-      navigate("/");
+      fetch(`${hosts.backend}/api/auth/signin`, {
+        method: "POST",
+        body: JSON.stringify({
+          email: data.get("email"),
+          password: data.get("password"),
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message) {
+            console.log(data.message);
+            setError(data.message);
+            return;
+          } else {
+            console.log(data);
+            localStorage.setItem("token", data.accessToken);
+            navigate("/gigs");
+          }
+        });
     } catch (err) {
       setError(err.response.data);
     }
@@ -125,6 +146,13 @@ function Login() {
             </Grid>
           </Box>
         </Box>
+        {error && (
+          <Grid item xs={12}>
+            <Typography variant="body2" color="error">
+              {error}
+            </Typography>
+          </Grid>
+        )}
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
