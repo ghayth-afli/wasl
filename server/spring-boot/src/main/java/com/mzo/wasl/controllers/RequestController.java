@@ -33,7 +33,7 @@ public class RequestController {
     @Autowired
     CurrentDateAndTime currentDateAndTime;
 
-    @PostMapping("offers/{id}/requests")
+    @PostMapping("/offers/{id}/requests")
     @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")
     public ResponseEntity<?> submitRequest(@Valid @RequestBody RequestRequest requestRequest, @PathVariable Long id){
 
@@ -85,5 +85,14 @@ public class RequestController {
         offerRepository.save(o);
 
         return ResponseEntity.ok(new MessageResponse("Request submitted successfully!"));
+    }
+
+    @GetMapping("/myrequests")
+    @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")
+    public ResponseEntity<?> getMyRequests(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Sender currentSender = senderRepository.findByUserId(userDetails.getId());
+        return ResponseEntity.ok(requestRepository.findRequestsBySenderId(currentSender.getId()));
     }
 }
