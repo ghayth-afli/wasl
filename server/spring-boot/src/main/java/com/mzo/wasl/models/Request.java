@@ -41,13 +41,13 @@ public class Request {
     @JoinColumn(name = "sender_id")
     private Sender sender;
 
-    public Request(String description, Double totalPrice, Double weight, Date startRequest, Date endRequest, EStatus status, Offer offer) {
+    public Request(String description, Double totalPrice, Double weight, Date startRequest,EStatus status, Offer offer,Sender sender) {
         this.description = description;
         this.totalPrice = totalPrice;
         this.weight = weight;
         this.startRequest = startRequest;
-        this.endRequest = endRequest;
         this.status = status;
         this.offer = offer;
+        this.sender=sender;
     }
 }

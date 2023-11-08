@@ -51,4 +51,8 @@ public class Offer {
         this.image = image;
         this.traveler = traveler;
     }
+
+    public void setRemainingCapacity(Double remainingCapacity) {
+        this.remainingCapacity = remainingCapacity;
+    }
 }

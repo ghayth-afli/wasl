@@ -7,4 +7,5 @@ import com.mzo.wasl.models.Request;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request,Long> {
-} 
+    Boolean existsByOfferIdAndSenderId(Long offerId,Long senderId);
+}
