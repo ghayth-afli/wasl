@@ -1,12 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./MyGigs.scss";
+import { hosts } from "../../const";
 
 function MyGigs() {
   const currentUser = {
     id: 1,
     username: "Anna",
     isSeller: true,
+  };
+  const [offers, setOffers] = React.useState([]);
+
+  const offersFetching = () => {
+    fetch(`${hosts.backend}/api/offers`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setOffers(data);
+      });
+  };
+  useEffect(() => {
+    offersFetching();
+  }, []);
+
+  const handleDelete = (event, offerId) => {
+    event.preventDefault();
+    fetch(`${hosts.backend}/api/offers/${offerId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("data in deleting", data);
+      })
+      .then(() => {
+        offersFetching();
+      });
   };
 
   return (
@@ -25,111 +65,34 @@ function MyGigs() {
             <th>Image</th>
             <th>Title</th>
             <th>Price</th>
-            <th>Sales</th>
+            <th>Date</th>
             <th>Action</th>
           </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Stunning concept art</td>
-            <td>
-              59.<sup>99</sup>
-            </td>
-            <td>13</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Ai generated concept art</td>
-            <td>
-              120.<sup>99</sup>
-            </td>
-            <td>41</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>High quality digital character</td>
-            <td>
-              79.<sup>99</sup>
-            </td>
-            <td>55</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Illustration hyper realistic painting</td>
-            <td>
-              119.<sup>99</sup>
-            </td>
-            <td>29</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Original ai generated digital art</td>
-            <td>
-              59.<sup>99</sup>
-            </td>
-            <td>34</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Text based ai generated art</td>
-            <td>
-              110.<sup>99</sup>
-            </td>
-            <td>16</td>
-            <td>
-              <img className="delete" src="./img/delete.png" alt="" />
-            </td>
-          </tr>
+          {offers.map((offer) => (
+            <tr key={offer.id}>
+              <td>
+                <img
+                  className="image"
+                  src={`./img/offers/${offer.image}`}
+                  alt=""
+                />
+              </td>
+              <td>{offer.title}</td>
+              <td>
+                {offer.price}
+                <sup>TND</sup>
+              </td>
+              <td>{new Date(offer.date).toUTCString()}</td>
+              <td>
+                <img
+                  className="delete"
+                  src="./img/delete.png"
+                  alt=""
+                  onClick={(event) => handleDelete(event, offer.id)}
+                />
+              </td>
+            </tr>
+          ))}
         </table>
       </div>
     </div>

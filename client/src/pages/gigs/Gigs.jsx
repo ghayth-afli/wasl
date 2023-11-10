@@ -16,7 +16,7 @@ function Gigs() {
       method: "GET",
       headers: {
         "Content-Type": "Application/json ; charset=UTF-8",
-        "Authorization": "Bearer " + localStorage.getItem("token") ,
+        Authorization: "Bearer " + localStorage.getItem("token"),
       },
     })
       .then((res) => res.json())
