@@ -31,8 +31,8 @@ public class Offer {
     @Column(name = "remaining_capacity")
     private Double remainingCapacity;
     private String image;
-    @OneToMany(mappedBy = "offer")
     @JsonIgnore
+    @OneToMany(fetch=FetchType.LAZY,mappedBy = "offer")
     private List<Request> requests;
     @ManyToOne
     @JoinColumn(name = "traveler_id")

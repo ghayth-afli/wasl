@@ -11,4 +11,5 @@ import java.util.List;
 public interface RequestRepository extends JpaRepository<Request,Long> {
     Boolean existsByOfferIdAndSenderId(Long offerId,Long senderId);
     List<Request> findRequestsBySenderId(Long id);
+    List<Request> findRequestsByOfferId(Long id);
 }

@@ -3,13 +3,16 @@ package com.mzo.wasl.controllers;
 import com.mzo.wasl.models.*;
 import com.mzo.wasl.payload.request.RequestRequest;
 import com.mzo.wasl.payload.response.MessageResponse;
+import com.mzo.wasl.payload.response.OfferWithRequestsResponse;
 import com.mzo.wasl.repositories.OfferRepository;
 import com.mzo.wasl.repositories.RequestRepository;
 import com.mzo.wasl.repositories.SenderRepository;
+import com.mzo.wasl.repositories.TravelerRepository;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import com.mzo.wasl.services.CurrentDateAndTime;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,7 +20,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,7 +37,8 @@ public class RequestController {
     SenderRepository senderRepository;
     @Autowired
     CurrentDateAndTime currentDateAndTime;
-
+    @Autowired
+    TravelerRepository travelerRepository;
     @PostMapping("/offers/{id}/requests")
     @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")
     public ResponseEntity<?> submitRequest(@Valid @RequestBody RequestRequest requestRequest, @PathVariable Long id){
@@ -94,5 +100,21 @@ public class RequestController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Sender currentSender = senderRepository.findByUserId(userDetails.getId());
         return ResponseEntity.ok(requestRepository.findRequestsBySenderId(currentSender.getId()));
+    }
+
+    @GetMapping("/myallrequests")
+    @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
+    public ResponseEntity<?> getMyAllRequests(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
+        List<Offer> offers = offerRepository.findOffersByTravelerId(currentTraveler.getId());
+        List<OfferWithRequestsResponse> offersWithRequests = new ArrayList<>();
+        for (Offer offer : offers) {
+            List<Request> requests = requestRepository.findRequestsByOfferId(offer.getId());
+            OfferWithRequestsResponse offerWithRequestsResponse = new OfferWithRequestsResponse(offer,requests);
+            offersWithRequests.add(offerWithRequestsResponse);
+        }
+        return ResponseEntity.ok(offersWithRequests);
     }
 }
