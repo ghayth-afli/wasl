@@ -117,4 +117,17 @@ public class RequestController {
         }
         return ResponseEntity.ok(offersWithRequests);
     }
+
+    @GetMapping("/offers/{offer_id}/requests/{request_id}")
+    @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
+    public ResponseEntity<?> getRequest(@PathVariable Long offer_id,@PathVariable Long request_id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Traveler currentTraveler = travelerRepository.findByUserId(userDetails.getId());
+        List<Offer> offers = offerRepository.findOffersByTravelerId(currentTraveler.getId());
+        if (!offers.contains(offerRepository.findById(offer_id).get())){
+            return ResponseEntity.ok(new MessageResponse("This offer does not belong to you!"));
+        }
+        return ResponseEntity.ok(requestRepository.findById(request_id));
+    }
 }
