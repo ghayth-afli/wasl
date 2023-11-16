@@ -102,7 +102,7 @@ public class RequestController {
         return ResponseEntity.ok(requestRepository.findRequestsBySenderId(currentSender.getId()));
     }
 
-    @GetMapping("/myallrequests")
+    @GetMapping("/requests")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> getMyAllRequests(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
