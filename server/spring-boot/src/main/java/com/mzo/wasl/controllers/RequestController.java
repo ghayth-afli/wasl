@@ -102,6 +102,22 @@ public class RequestController {
         return ResponseEntity.ok(requestRepository.findRequestsBySenderId(currentSender.getId()));
     }
 
+    @GetMapping("/myrequests/{id}")
+    @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")
+    public ResponseEntity<?> getMyRequest(@PathVariable Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Sender currentSender = senderRepository.findByUserId(userDetails.getId());
+        Optional<Request> request = requestRepository.findById(id);
+        if (!request.isPresent()){
+            return ResponseEntity.ok(new MessageResponse("This request does not exist!"));
+        }
+        if (request.get().getSender().getId()!=currentSender.getId()){
+            return ResponseEntity.ok(new MessageResponse("This request does not belong to you!"));
+        }
+        return ResponseEntity.ok(request);
+    }
+
     @GetMapping("/requests")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> getMyAllRequests(){
