@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { hosts } from "../../const.js";
@@ -23,7 +23,6 @@ function Navbar() {
     localStorage.removeItem("token");
     localStorage.removeItem("gig");
     navigate("/");
-
   };
 
   useEffect(() => {
@@ -33,7 +32,26 @@ function Navbar() {
     };
   }, []);
 
- 
+  function getUserData() {
+    fetch(`${hosts.backend}/api/myprofile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "Application/json ; charset=UTF-8",
+        Authorization: "Bearer " + localStorage.getItem("token") || null,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setUser(data);
+        console.log("data", data);
+      })
+      .catch((err) => {
+        setUser(null);
+        currentUser = null;
+      });
+  }
   function switchRole() {
     fetch(`${hosts.backend}/api/switch`, {
       method: "PUT",
@@ -47,8 +65,7 @@ function Navbar() {
         return res.json();
       })
       .then((data) => {
-        console.log("data", data);
-        setUser(data);
+        getUserData();
       })
       .catch((err) => {
         console.log("err", err);
@@ -57,34 +74,16 @@ function Navbar() {
   }
   var currentUser;
 
-  
-    useEffect(() => {
-      fetch(`${hosts.backend}/api/myprofile`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "Application/json ; charset=UTF-8",
-          Authorization: "Bearer " + localStorage.getItem("token") || null,
-        },
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          setUser(data);
-          console.log("data", data);
-        })
-        .catch((err) => {
-          setUser(null);
-          currentUser = null;
-        });
-    }, []);
+  useEffect(() => {
+    getUserData();
+  }, []);
 
-    if (token){
-      currentUser = user;
-      var profileImgUrl = './img/profiles/' + currentUser?.id + '.jpg' || './img/profiles/0.jpg';
-      console.log("token exists", profileImgUrl);
-    }
-
+  if (token) {
+    currentUser = user;
+    var profileImgUrl =
+      "./img/profiles/" + currentUser?.id + ".jpg" || "./img/profiles/0.jpg";
+    console.log("token exists", profileImgUrl);
+  }
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -99,14 +98,15 @@ function Navbar() {
           <Link className="link" to="/gigs">
             <span>Explore</span>
           </Link>
-          {currentUser && !currentUser?.traveler && <Button  onClick={switchRole}>Become a Traveller</Button >}
-          {currentUser?.traveler && <Button >Become a Sender</Button >}
+          {currentUser && !currentUser?.traveler && (
+            <Button onClick={switchRole}>Become a Traveller</Button>
+          )}
+          {currentUser?.traveler && (
+            <Button onClick={switchRole}>Become a Sender</Button>
+          )}
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
-              <img
-                src={profileImgUrl }
-                alt="user image"
-              />
+              <img src={profileImgUrl} alt="user image" />
               <span>{currentUser?.user?.username}</span>
               {open && (
                 <div className="options">
