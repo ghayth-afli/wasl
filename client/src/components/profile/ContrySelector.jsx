@@ -443,7 +443,7 @@ export default function CountrySelector({ sx, ...props }) {
         size="sm"
         autoHighlight
         isOptionEqualToValue={(option, value) => option.code === value.code}
-        defaultValue={{ code: "TH", label: "Thailand", phone: "66" }}
+        defaultValue={{ code: "TN", label: "Tunisia", phone: "216" }}
         options={countries}
         renderOption={(optionProps, option) => (
           <AutocompleteOption {...optionProps}>
