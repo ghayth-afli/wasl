@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import "./MyGigs.scss";
 import { hosts } from "../../const";
 
 function MyGigs() {
+  const navigate = useNavigate();
   const currentUser = {
     id: 1,
     username: "Anna",
@@ -48,6 +49,11 @@ function MyGigs() {
         offersFetching();
       });
   };
+  const handelUpdate=(event ,id)=>{
+    event.preventDefault();
+    const link = "/edit/"+id
+    navigate(link)
+  }
 
   return (
     <div className="myGigs">
@@ -90,6 +96,19 @@ function MyGigs() {
                   alt=""
                   onClick={(event) => handleDelete(event, offer.id)}
                 />
+              </td>
+              <td>
+              
+            
+                
+                <img
+                   className="edit"
+                   src="./img/edit.png"
+                   alt=""
+                   onClick={(event)=>handelUpdate(event,offer.id)}
+                   ></img>
+                  
+                    
               </td>
             </tr>
           ))}
