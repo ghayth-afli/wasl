@@ -11,6 +11,7 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   const [user, setUser] = useState(null);
+  var currentUser;
 
   const token = localStorage.getItem("token") || null;
 
@@ -19,7 +20,6 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    console.log("user logout logic");
     localStorage.removeItem("token");
     localStorage.removeItem("gig");
     navigate("/");
@@ -45,7 +45,6 @@ function Navbar() {
       })
       .then((data) => {
         setUser(data);
-        console.log("data", data);
       })
       .catch((err) => {
         setUser(null);
@@ -61,7 +60,6 @@ function Navbar() {
       },
     })
       .then((res) => {
-        console.log("res", res);
         return res.json();
       })
       .then((data) => {
@@ -72,7 +70,6 @@ function Navbar() {
         // setUser(null);
       });
   }
-  var currentUser;
 
   useEffect(() => {
     getUserData();
@@ -82,7 +79,6 @@ function Navbar() {
     currentUser = user;
     var profileImgUrl =
       "./img/profiles/" + currentUser?.id + ".jpg" || "./img/profiles/0.jpg";
-    console.log("token exists", profileImgUrl);
   }
 
   return (
@@ -107,7 +103,7 @@ function Navbar() {
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
               <img src={profileImgUrl} alt="user image" />
-              <span>{currentUser?.user?.username}</span>
+              <span>{currentUser?.firstName + " " + currentUser?.lastName}</span>
               {open && (
                 <div className="options">
                   <Link className="link" to="/profile">
