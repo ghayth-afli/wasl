@@ -65,8 +65,7 @@ export default function MyProfile() {
   };
 
   var profileImgUrl =
-    "./img/profiles/" + user?.id + ".jpg" || "./img/profiles/1.jpg";
-
+    "./img/profiles/" + user?.id + ".jpg" || "./img/profiles/0.jpg";
   const updateProfile = async (event) => {
     event.preventDefault();
     console.log("user new", user);
@@ -228,7 +227,7 @@ export default function MyProfile() {
                     size="sm"
                     placeholder="User name"
                     sx={{ flexGrow: 1 }}
-                    value={user?.userName}
+                    value={user?.firstName + " " + user?.lastName}
                     onChange={handleChange}
                     name="userName"
                   />

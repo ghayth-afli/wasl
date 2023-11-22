@@ -1,13 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { hosts } from "../../const.js";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Orders.scss";
 
 const Orders = () => {
-  const currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
-  };
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [requests, setRequests] = useState([]);
+  const [apiEndpoint, setApiEndpoint] = useState(null);
+  useEffect(() => {
+    fetch(`${hosts.backend}/api/myprofile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "Application/json ; charset=UTF-8",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log("data", data);
+        if (data.error == "Unauthorized") {
+          throw new Error(data.error);
+        }
+        setUser(data);
+      })
+      .catch((err) => {
+        if (err.message == "Unauthorized") {
+          navigate("/login");
+        } else {
+          console.log(err);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setApiEndpoint(
+        user.traveler
+          ? `${hosts.backend}/api/requests`
+          : `${hosts.backend}/api/myrequests`
+      );
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log("apiEndpoint", apiEndpoint);
+    if (!apiEndpoint) return;
+    fetch(`${apiEndpoint}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "Application/json ; charset=UTF-8",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setRequests(data);
+      });
+  }, [apiEndpoint]);
 
   return (
     <div className="orders">
@@ -17,114 +89,99 @@ const Orders = () => {
         </div>
         <table>
           <tr>
-            <th>Image</th>
+            <th>Offer</th>
             <th>Title</th>
             <th>Price</th>
-            {<th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>}
+            <th>Status</th>
+            <th>Requested Date</th>
+            {<th>{user.traveler ? "Sender" : "Traveler"}</th>}
             <th>Contact</th>
           </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Stunning concept art</td>
-            <td>
-              59.<sup>99</sup>
-            </td>
-            <td>Maria Anders</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Ai generated concept art</td>
-            <td>
-              79.<sup>99</sup>
-            </td>
-            <td>Francisco Chang</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>High quality digital character</td>
-            <td>
-              110.<sup>99</sup>
-            </td>
-            <td>Roland Mendel</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Illustration hyper realistic painting</td>
-            <td>
-              39.<sup>99</sup>
-            </td>
-            <td>Helen Bennett</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Original ai generated digital art</td>
-            <td>
-              119.<sup>99</sup>
-            </td>
-            <td>Yoshi Tannamuri</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img
-                className="image"
-                src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
-              />
-            </td>
-            <td>Text based ai generated art</td>
-            <td>
-              49.<sup>99</sup>
-            </td>
-            <td>Giovanni Rovelli</td>
-            <td>
-              <img className="message" src="./img/message.png" alt="" />
-            </td>
-          </tr>
+          {user &&
+            user.traveler &&
+            requests &&
+            requests.map((item) => {
+              return item.requests.map((request) => {
+                const gigLink = `/gig/${request.offer.id}`;
+                const date = new Date(request.startRequest);
+                const day = date.getDate();
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+                return (
+                  <tbody key={request.id}>
+                    <tr>
+                      <td>
+                        {" "}
+                        <Link to={gigLink}> Go to offer </Link>
+                      </td>
+                      <td>{request.offer.title}</td>
+                      <td>{request.totalPrice}</td>
+                      <td
+                        className={
+                          request.status === "PENDING" ? "pending" : "completed"
+                        }
+                      >
+                        {request.status}
+                      </td>
+                      <td>
+                        {day} {monthNames[month - 1]} {year}
+                      </td>
+                      <td>{request.sender.user?.username}</td>
+                      <td>
+                        <img
+                          className="message"
+                          src="./img/message.png"
+                          alt=""
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                );
+              });
+            })}
+
+          {user &&
+            !user.traveler &&
+            requests &&
+            requests.map((item) => {
+                const request = item;
+                const gigLink = `/gig/${request.offer.id}`;
+                const date = new Date(request.startRequest);
+                const day = date.getDate();
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+                return (
+                  <tbody key={request.id}>
+                    <tr>
+                      <td>
+                        {" "}
+                        <Link to={gigLink}> Go to offer </Link>
+                      </td>
+                      <td>{request.offer.title}</td>
+                      <td>{request.totalPrice}</td>
+                      <td
+                        className={
+                          request.status === "PENDING" ? "pending" : "completed"
+                        }
+                      >
+                        {request.status}
+                      </td>
+                      <td>
+                        {day} {monthNames[month - 1]} {year}
+                      </td>
+                      <td>{request.offer.traveler.user.username}</td>
+                      <td>
+                        <img
+                          className="message"
+                          src="./img/message.png"
+                          alt=""
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                );
+              
+            })}
         </table>
       </div>
     </div>
