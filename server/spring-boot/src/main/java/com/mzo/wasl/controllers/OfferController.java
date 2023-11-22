@@ -25,7 +25,6 @@ public class OfferController {
     TravelerRepository travelerRepository;
 
     @GetMapping("/offers")
-    @PreAuthorize("hasRole('REGULAR')")
     public ResponseEntity<?> getAllOffers() {
         return ResponseEntity.ok(offerRepository.findAll());
     }
