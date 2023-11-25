@@ -1,4 +1,4 @@
-import * as React from "react";
+import {React, useState, useEffect} from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -29,14 +29,42 @@ import AccessTimeFilledRoundedIcon from "@mui/icons-material/AccessTimeFilledRou
 import VideocamRoundedIcon from "@mui/icons-material/VideocamRounded";
 import InsertDriveFileRoundedIcon from "@mui/icons-material/InsertDriveFileRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 import CountrySelector from "./ContrySelector.jsx";
 import { hosts } from "../../const.js";
 
-export default function MyProfile() {
-  const [user, setUser] = React.useState(null);
+import axios from "axios";
 
-  React.useEffect(() => {
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
+
+export default function MyProfile() {
+
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    userName: "",
+    language: "",
+    email: "",
+    bio: "",
+    image: "",
+    city: "",
+    country: "",
+    phoneNyumber: "",
+  });
+
+  const [file, setFile] = useState(null);
+  useEffect(() => {
     fetch(`${hosts.backend}/api/myprofile`, {
       method: "GET",
       headers: {
@@ -48,7 +76,6 @@ export default function MyProfile() {
         return res.json();
       })
       .then((data) => {
-        console.log("data", data);
         setUser(data);
       })
       .catch((err) => {
@@ -56,19 +83,40 @@ export default function MyProfile() {
       });
   }, []);
 
+  const uploadFile = async (file) => {
+    if (!file) return null;
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "wassel");
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dlxlpazb7/image/upload",
+        data
+      );
+      const { url } = response.data;
+      return url;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (event) => {
-    console.log("event", event.target.name, "dfsdf", event.target.value);
     setUser({
       ...user,
       [event.target.name]: event.target.value,
     });
   };
 
-  var profileImgUrl =
-    "./img/profiles/" + user?.id + ".jpg" || "./img/profiles/0.jpg";
   const updateProfile = async (event) => {
     event.preventDefault();
-    console.log("user new", user);
+    const url = await uploadFile(file);
+    if (url !== null && url !== undefined) {
+      setUser({
+        ...user,
+        image: url,
+      });
+    }
     try {
       const response = await fetch(`${hosts.backend}/api/myprofile`, {
         method: "PUT",
@@ -76,11 +124,11 @@ export default function MyProfile() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify({
+          ...user, image: url
+        }),
       });
-      console.log("response", response);
       const data = await response.json();
-      console.log("data", data);
       setUser(data);
     } catch (err) {
       console.log("err", err);
@@ -187,8 +235,9 @@ export default function MyProfile() {
                 sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
               >
                 <img
-                  src={profileImgUrl || "./img/profiles/0.png"}
-                  srcSet={profileImgUrl}
+                  src={
+                   user?.image ||  "https://res.cloudinary.com/dlxlpazb7/image/upload/v1700916977/wasl/noavatar_xvf6ez.png"
+                  }
                   loading="lazy"
                   alt=""
                 />
@@ -197,6 +246,7 @@ export default function MyProfile() {
                 aria-label="upload new picture"
                 size="sm"
                 variant="outlined"
+                component="label"
                 color="neutral"
                 sx={{
                   bgcolor: "background.body",
@@ -208,7 +258,14 @@ export default function MyProfile() {
                   boxShadow: "sm",
                 }}
               >
-                <EditRoundedIcon />
+                <Button
+                  component="label"
+                  variant="contained"
+                  onChange={(e) => setFile(e.target.files[0])}
+                >
+                  <EditRoundedIcon />
+                  <VisuallyHiddenInput type="file" />
+                </Button>
               </IconButton>
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
@@ -328,3 +385,4 @@ export default function MyProfile() {
     </Box>
   );
 }
+
