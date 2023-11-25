@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
+import axios from "axios";
 
 const Add = () => {
   const navigate = useNavigate();
@@ -46,6 +47,24 @@ const Add = () => {
   });
   const [file, setFile] = useState(null);
 
+  const uploadFile = async (file) => {
+    if (!file) return null;
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "wassel");
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dlxlpazb7/image/upload",
+        data
+      );
+      const { url } = response.data;
+      return url;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleFileChange = (event) => {
     console.log("event.target.files[0]", event.target.files[0]);
     setFile(event.target.files[0]);
@@ -60,8 +79,13 @@ const Add = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    formValues["image"] = file?.name || "";
-    formValues["time"] = new Date(formValues["time"]).getTime();
+    const imageUrl = await uploadFile(file);
+    if (imageUrl !== null && imageUrl !== undefined) {
+      setFormValues({
+        ...formValues,
+        image: imageUrl,
+      });
+    }
 
     try {
       const response = await fetch(`${hosts.backend}/api/offers`, {
@@ -70,15 +94,21 @@ const Add = () => {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
-        body: JSON.stringify(formValues),
+        body: JSON.stringify({
+          ...formValues,
+          image: imageUrl,
+        }),
       });
       if (!response.ok) {
         setError(true);
+        window.scrollTo(0, 0);
         throw new Error("HTTP error " + response.status);
       }
 
-      const data = await response.json();
+      await response.json();
+
       setError(false);
+      window.scrollTo(0, 0);
     } catch (error) {
       console.log("Fetch error:", error);
       setError(true);
@@ -133,7 +163,10 @@ const Add = () => {
                   startIcon={<CloudUploadIcon />}
                 >
                   Upload file
-                  <input type="file" onChange={handleFileChange} />
+                  <input
+                    type="file"
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
                 </Button>
                 <TextField
                   name="description"
@@ -169,6 +202,9 @@ const Add = () => {
                 <TextField
                   name="date"
                   label="Date"
+                  inputProps={{
+                    min: new Date().toISOString().split("T")[0],
+                  }}
                   type="date"
                   fullWidth
                   required
