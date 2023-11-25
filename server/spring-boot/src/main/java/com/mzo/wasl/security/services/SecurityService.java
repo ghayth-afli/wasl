@@ -1,9 +1,7 @@
 package com.mzo.wasl.security.services;
 
-import com.mzo.wasl.models.Profile;
-import com.mzo.wasl.models.User;
-import com.mzo.wasl.repositories.ProfileRepository;
-import com.mzo.wasl.repositories.UserRepository;
+import com.mzo.wasl.model.Profile;
+import com.mzo.wasl.repository.ProfileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
