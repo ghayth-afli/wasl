@@ -41,8 +41,10 @@ public class OfferController {
     }
 
     @GetMapping("/offers/{id}")
-    @PreAuthorize("hasRole('REGULAR')")
     public ResponseEntity<?> getOffer(@PathVariable Long id) {
+        if (!offerService.getOffer(id).isPresent()) {
+            return ResponseEntity.ok(new MessageResponse("Offer not found"));
+        }
         return ResponseEntity.ok(offerService.getOffer(id));
     }
 
