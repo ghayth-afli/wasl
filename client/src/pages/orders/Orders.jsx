@@ -25,6 +25,7 @@ const Orders = () => {
   const [user, setUser] = useState(null);
   const [requests, setRequests] = useState([]);
   const [apiEndpoint, setApiEndpoint] = useState(null);
+
   useEffect(() => {
     fetch(`${hosts.backend}/api/myprofile`, {
       method: "GET",
@@ -37,7 +38,6 @@ const Orders = () => {
         return res.json();
       })
       .then((data) => {
-        console.log("data", data);
         if (data.error == "Unauthorized") {
           throw new Error(data.error);
         }
@@ -55,7 +55,7 @@ const Orders = () => {
   useEffect(() => {
     if (user) {
       setApiEndpoint(
-        user.traveler
+        user?.traveler
           ? `${hosts.backend}/api/requests`
           : `${hosts.backend}/api/myrequests`
       );
@@ -63,8 +63,10 @@ const Orders = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log("apiEndpoint", apiEndpoint);
-    if (!apiEndpoint) return;
+    if (!apiEndpoint) {
+      console.log("no apiEndpoint");
+      return;
+    }
     fetch(`${apiEndpoint}`, {
       method: "GET",
       headers: {
@@ -76,7 +78,6 @@ const Orders = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setRequests(data);
       });
   }, [apiEndpoint]);
@@ -94,11 +95,11 @@ const Orders = () => {
             <th>Price</th>
             <th>Status</th>
             <th>Requested Date</th>
-            {<th>{user.traveler ? "Sender" : "Traveler"}</th>}
+            {<th>{user?.traveler ? "Sender" : "Traveler"}</th>}
             <th>Contact</th>
           </tr>
           {user &&
-            user.traveler &&
+            user?.traveler &&
             requests &&
             requests.map((item) => {
               return item.requests.map((request) => {
@@ -141,7 +142,7 @@ const Orders = () => {
             })}
 
           {user &&
-            !user.traveler &&
+            !user?.traveler &&
             requests &&
             requests.map((item) => {
                 const request = item;
@@ -169,7 +170,7 @@ const Orders = () => {
                       <td>
                         {day} {monthNames[month - 1]} {year}
                       </td>
-                      <td>{request.offer.traveler.user.username}</td>
+                      <td>{request?.offer?.traveler.user.username}</td>
                       <td>
                         <img
                           className="message"
