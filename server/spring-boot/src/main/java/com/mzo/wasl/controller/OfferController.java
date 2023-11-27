@@ -1,11 +1,9 @@
 package com.mzo.wasl.controller;
 
-import com.mzo.wasl.model.Offer;
-import com.mzo.wasl.model.Traveler;
 import com.mzo.wasl.dto.request.OfferRequest;
 import com.mzo.wasl.dto.response.MessageResponse;
-import com.mzo.wasl.repository.OfferRepository;
-import com.mzo.wasl.repository.TravelerRepository;
+import com.mzo.wasl.model.Offer;
+import com.mzo.wasl.model.Traveler;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import com.mzo.wasl.service.OfferService;
 import com.mzo.wasl.service.TravelerService;
