@@ -133,6 +133,7 @@ public class RequestController {
         return ResponseEntity.ok(offersWithRequests);
     }
 
+
     @GetMapping("/offers/{offer_id}/requests/{request_id}")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> getRequest(@PathVariable Long offer_id,@PathVariable Long request_id){
@@ -144,5 +145,90 @@ public class RequestController {
             return ResponseEntity.ok(new MessageResponse("This offer does not belong to you!"));
         }
         return ResponseEntity.ok(requestService.getRequest(request_id));
+    }
+
+    //MARK Request as COMPLETED
+    @PutMapping("/offers/{offer_id}/requests/{request_id}/complete")
+    @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
+    public ResponseEntity<?> completeRequest(@PathVariable Long offer_id,@PathVariable Long request_id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Traveler currentTraveler = travelerService.getTravelerByUserId(userDetails.getId());
+        List<Offer> offers = offerService.getOffersByTravelerId(currentTraveler.getId());
+        if (!offers.contains(offerService.getOffer(offer_id).get())){
+            return ResponseEntity.ok(new MessageResponse("This offer does not belong to you!"));
+        }
+        Optional<Request> request = requestService.getRequest(request_id);
+        if (!request.isPresent()){
+            return ResponseEntity.ok(new MessageResponse("This request does not exist!"));
+        }
+        if (request.get().getOffer().getId()!=offer_id){
+            return ResponseEntity.ok(new MessageResponse("This request does not belong to this offer!"));
+        }
+        if (request.get().getStatus()!=EStatus.PENDING){
+            return ResponseEntity.ok(new MessageResponse("This request is not pending!"));
+        }
+        //Update request status
+        Request r = new Request();
+        r.setId(request.get().getId());
+        r.setDescription(request.get().getDescription());
+        r.setTotalPrice(request.get().getTotalPrice());
+        r.setWeight(request.get().getWeight());
+        r.setStartRequest(request.get().getStartRequest());
+        r.setEndRequest(Date.from(currentDateAndTime.getCurrentLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        r.setStatus(EStatus.COMPLETED);
+        r.setOffer(request.get().getOffer());
+        r.setSender(request.get().getSender());
+        requestService.addRequest(r);
+        return ResponseEntity.ok(new MessageResponse("Request completed successfully!"));
+    }
+
+    //MARK Request as CANCELLED
+    @PutMapping("/offers/{offer_id}/requests/{request_id}/cancel")
+    @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")
+    public ResponseEntity<?> cancelRequest(@PathVariable Long offer_id,@PathVariable Long request_id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Sender currentSender = senderService.getSenderByUserId(userDetails.getId());
+        Optional<Request> request = requestService.getRequest(request_id);
+        if (!request.isPresent()){
+            return ResponseEntity.ok(new MessageResponse("This request does not exist!"));
+        }
+        if (request.get().getSender().getId()!=currentSender.getId()){
+            return ResponseEntity.ok(new MessageResponse("This request does not belong to you!"));
+        }
+        if (request.get().getStatus()!=EStatus.PENDING){
+            return ResponseEntity.ok(new MessageResponse("This request is not pending!"));
+        }
+        //Update request status
+        Request r = new Request();
+        r.setId(request.get().getId());
+        r.setDescription(request.get().getDescription());
+        r.setTotalPrice(request.get().getTotalPrice());
+        r.setWeight(request.get().getWeight());
+        r.setStartRequest(request.get().getStartRequest());
+        r.setEndRequest(request.get().getEndRequest());
+        r.setStatus(EStatus.CANCELLED);
+        r.setOffer(request.get().getOffer());
+        r.setSender(request.get().getSender());
+        requestService.addRequest(r);
+
+        //Update remaining capacity
+        Offer o = new Offer();
+        o.setId(request.get().getOffer().getId());
+        o.setTitle(request.get().getOffer().getTitle());
+        o.setDescription(request.get().getOffer().getDescription());
+        o.setDepart(request.get().getOffer().getDepart());
+        o.setDestination(request.get().getOffer().getDestination());
+        o.setDate(request.get().getOffer().getDate());
+        o.setTime(request.get().getOffer().getTime());
+        o.setPrice(request.get().getOffer().getPrice());
+        o.setCapacity(request.get().getOffer().getCapacity());
+        o.setRemainingCapacity(request.get().getOffer().getRemainingCapacity()+request.get().getWeight());
+        o.setImage(request.get().getOffer().getImage());
+        o.setTraveler(request.get().getOffer().getTraveler());
+        offerService.addOffer(o);
+
+        return ResponseEntity.ok(new MessageResponse("Request cancelled successfully!"));
     }
 }
