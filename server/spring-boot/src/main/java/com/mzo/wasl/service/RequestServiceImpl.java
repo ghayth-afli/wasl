@@ -33,4 +33,9 @@ public class RequestServiceImpl implements RequestService{
         return requestRepository.findRequestsByOfferId(offerId);
     }
 
+    @Override
+    public void deleteRequest(Long id) {
+        requestRepository.deleteById(id);
+    }
+
 }

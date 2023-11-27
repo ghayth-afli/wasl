@@ -5,10 +5,7 @@ import com.mzo.wasl.dto.response.MessageResponse;
 import com.mzo.wasl.dto.response.OfferWithRequestsResponse;
 import com.mzo.wasl.model.*;
 import com.mzo.wasl.security.services.UserDetailsImpl;
-import com.mzo.wasl.service.OfferService;
-import com.mzo.wasl.service.RequestService;
-import com.mzo.wasl.service.SenderService;
-import com.mzo.wasl.service.TravelerService;
+import com.mzo.wasl.service.*;
 import com.mzo.wasl.util.CurrentDateAndTimeUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,8 @@ import java.util.Optional;
 public class RequestController {
     @Autowired
     RequestService requestService;
+    @Autowired
+    CancelledReqService cancelledReqService;
     @Autowired
     OfferService offerService;
     @Autowired
@@ -211,7 +210,14 @@ public class RequestController {
         r.setStatus(EStatus.CANCELLED);
         r.setOffer(request.get().getOffer());
         r.setSender(request.get().getSender());
-        requestService.addRequest(r);
+        cancelledReqService.saveCancelledReq(new CancelledReq(request.get().getDescription(),
+                request.get().getTotalPrice(),
+                request.get().getWeight(),
+                request.get().getStartRequest(),
+                Date.from(currentDateAndTime.getCurrentLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                request.get().getOffer(),
+                request.get().getSender()));
+        requestService.deleteRequest(request.get().getId());
 
         //Update remaining capacity
         Offer o = new Offer();

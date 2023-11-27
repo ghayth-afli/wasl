@@ -13,4 +13,6 @@ public interface RequestService {
     Optional<Request> getRequest(Long id);
 
     List<Request> getRequestsByOfferId(Long offerId);
+
+    void deleteRequest(Long id);
 }
