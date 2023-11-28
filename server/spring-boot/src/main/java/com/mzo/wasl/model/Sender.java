@@ -29,4 +29,8 @@ public class Sender {
     public Sender(User user) {
         this.user = user;
     }
+
+    public String getRequest(Long requestId) {
+        return null;
+    }
 }

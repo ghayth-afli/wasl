@@ -19,14 +19,14 @@ public class Review {
     private String comment;
     private Short rating;
     private Date date;
-    @OneToOne
-    @JoinColumn(name = "request_id")
-    private Request request;
+    // @OneToOne
+    // @JoinColumn(name = "request_id")
+    private Long requestId;
 
-    public Review(String comment, Short rating, Date date, Request request) {
+    public Review(String comment, Short rating, Date date, Long requestId) {
         this.comment = comment;
         this.rating = rating;
         this.date = date;
-        this.request = request;
+        this.requestId = requestId;
     }
 }
