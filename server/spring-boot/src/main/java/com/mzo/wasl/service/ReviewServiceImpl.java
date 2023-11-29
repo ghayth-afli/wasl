@@ -25,11 +25,6 @@ public class ReviewServiceImpl implements ReviewService{
         reviewRepositroy.save(r);
     }
 
-    @Override
-    public void updateReview(Review r) {
-       reviewRepositroy.save(r);
-       
-    }
 
     @Override
     public void deleteReview(Long id) {

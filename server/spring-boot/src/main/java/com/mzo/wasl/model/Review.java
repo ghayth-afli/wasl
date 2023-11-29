@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -19,14 +20,14 @@ public class Review {
     private String comment;
     private Short rating;
     private Date date;
-    // @OneToOne
-    // @JoinColumn(name = "request_id")
-    private Long requestId;
+    @OneToOne
+    @JoinColumn(name = "request_id")
+    private Optional<Request> request;
 
-    public Review(String comment, Short rating, Date date, Long requestId) {
+    public Review(String comment, Short rating, Date date, Optional<Request> request) {
         this.comment = comment;
         this.rating = rating;
         this.date = date;
-        this.requestId = requestId;
+        this.request = request;
     }
 }
