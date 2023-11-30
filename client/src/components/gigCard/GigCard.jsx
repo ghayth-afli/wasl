@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./GigCard.scss";
 import { Link } from "react-router-dom";
-
+import { hosts } from "../../const.js";
 const GigCard = ({ item }) => {
-  const imageUrl = './img/offers/' + item.image;
+  
+ 
+
+
   const profileImgUrl = './img/profiles/' + item.traveler.id + '.jpg';
   const linkTo = '/gig/' + item.id;
   return (
@@ -14,7 +17,7 @@ const GigCard = ({ item }) => {
       }
     }>
       <div className="gigCard">
-        <img src={imageUrl} alt="" />
+        <img src={item.image} alt="" />
         <div className="info">
           <div className="user">
             <img src={profileImgUrl} alt="" />
