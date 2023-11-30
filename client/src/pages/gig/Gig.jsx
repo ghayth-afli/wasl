@@ -1,15 +1,97 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Slider } from "infinite-react-carousel/lib";
+import Alert from '@mui/material/Alert';
+import { hosts } from "../../const";
+import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import axios from "axios";
 import "./Gig.scss";
 
 function Gig() {
-  const item = JSON.parse(localStorage.getItem('gig'));
-  console.log(item);
-  const imageUrl = '/img/offers/' + item.image;
-  const profileImgUrl = '/img/profiles/' + item.traveler.id + '.jpg';
-  const dateFormatted = new Date(item.date).toLocaleDateString();
+
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
+  const [item, setItem] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch(`${hosts.backend}/api/myprofile`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "Application/json ; charset=UTF-8",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((err) => {
+        setUser(null);
+      });
+  }, []);
+
+
+  useEffect(() => {
+    fetch(`${hosts.backend}/api/offers/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "Application/json ; charset=UTF-8",
+        // Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const submitOffer = () => {
+    if (!user) {
+      alert("You need to login first");
+      
+    }
+    else {
+      axios.post(`${hosts.backend}/api/offers/${id}/checkout/hosted`, {
+        description: item.description,
+        weight: item.price,
+      }, {
+        headers: {
+          "Content-Type": "Application/json ; charset=UTF-8",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          return res;
+        })
+        .then((data) => {
+          console.log("data", data.data);
+          window.location.href = data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      
+    }
+  }
+ 
+  if (!item) {
+    return null;
+  }
+
   return (
+    
     <div className="gig">
+      
+    
+     
       <div className="container">
         <div className="left">
           <span className="breadcrumbs"> Transportation offer </span>
@@ -17,10 +99,10 @@ function Gig() {
           <div className="user">
             <img
               className="pp"
-              src={profileImgUrl}
+              src={item.image}
               alt=""
             />
-            <span>{item.traveler.user.username}</span>
+            <span>{item.traveler?.user.username}</span>
             <div className="stars">
               <img src="/img/star.png" alt="" />
               <img src="/img/star.png" alt="" />
@@ -31,7 +113,7 @@ function Gig() {
             </div>
           </div>
           <Slider slidesToShow={1} arrowsScroll={1} className="slider">
-            <img src={imageUrl} alt="" />
+            <img src={item.image} alt="" />
           </Slider>
           <h2>About This Gig</h2>
           <p>
@@ -41,11 +123,11 @@ function Gig() {
             <h2>About The Seller</h2>
             <div className="user">
               <img
-                src={profileImgUrl}
+                src={item.image}
                 alt=""
               />
               <div className="info">
-                <span>{item.traveler.user.username}</span>
+                <span>{item.traveler?.user.username}</span>
                 <div className="stars">
                   <img src="/img/star.png" alt="" />
                   <img src="/img/star.png" alt="" />
@@ -233,7 +315,7 @@ function Gig() {
             </div>
             <div className="item">
               <img src="/img/recycle.png" alt="" />
-              <span> {dateFormatted} </span>
+              <span> {new Date(item.date).toLocaleDateString()} </span>
             </div>
           </div>
           <div className="features">
@@ -247,7 +329,7 @@ function Gig() {
             </div>
           
           </div>
-          <button>Continue</button>
+          <button onClick={submitOffer}>Continue</button>
         </div>
       </div>
     </div>
