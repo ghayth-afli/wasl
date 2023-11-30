@@ -4,25 +4,29 @@
   color: #555;
 
   .container {
-    width: 1400px;
-    padding: 50px 0px;
+    width:100% ;
+    max-width:1400px ;
+    padding: 20px ;
 
     .title {
       display: flex;
       justify-content: space-between;
 
       button {
+        width: 100%;
         background-color: #1dbf73;
         color: white;
         font-weight: 500;
         border: none;
         padding: 10px;
         cursor: pointer;
+        margin-bottom: 10px;
       }
     }
 
     table {
       width: 100%;
+      overflow-x: auto;
 
       tr {
         height: 50px;
@@ -58,5 +62,14 @@
   }
   .completed {
     color: #1dbf73;
+  }
+}
+@media screen and (max-width: 768px) {
+  .orders .container {
+    padding: 10px;
+  }
+
+  .orders .title button {
+    margin-bottom: 5px; 
   }
 }
