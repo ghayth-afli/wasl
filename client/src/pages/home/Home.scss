@@ -3,7 +3,7 @@
     background-color: #f1fdf7;
     display: flex;
     justify-content: center;
-    padding: 100px 0px;
+    padding: 50px 20px;
 
     &.dark {
       background-color: #0d084d;
@@ -41,11 +41,12 @@
     }
 
     .container {
-      width: 1400px;
+      width: 100%;
       display: flex;
       align-items: center;
-      gap: 200px;
+      gap: 20px;
       .item {
+        width: 100%;
         display: flex;
         flex-direction: column;
         gap: 15px;
@@ -84,7 +85,8 @@
         }
 
         video{
-          width: 720px;
+          width: 100%;
+          max-width: 720px;
         }
       }
     }
@@ -100,11 +102,12 @@
 
   .explore {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding: 100px 0px;
+    padding: 50px 20px;
 
     .container {
-      width: 1400px;
+      width: 100%;
 
       h1{
         color: #555;
@@ -117,8 +120,8 @@
         flex-wrap: wrap;
 
         .item {
-          width: 250px;
-          height: 150px;
+          width: 100%;
+          height: auto;
           display: flex;
           flex-direction: column;
           gap: 10px;
@@ -153,4 +156,5 @@
       }
     }
   }
+
 }
