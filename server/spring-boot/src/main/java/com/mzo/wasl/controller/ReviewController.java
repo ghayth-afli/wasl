@@ -8,8 +8,11 @@ import com.mzo.wasl.model.Sender;
 import com.mzo.wasl.model.Traveler;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import com.mzo.wasl.service.*;
+import com.mzo.wasl.util.CurrentDateAndTimeUtilImpl;
 import jakarta.validation.Valid;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,8 @@ public class ReviewController {
     SenderService senderService;
     @Autowired
     RequestService requestService;
-
+    @Autowired
+    CurrentDateAndTimeUtilImpl currentDateAndTime;
 
 
     @PostMapping("/request/{requestId}/review")
@@ -44,30 +48,36 @@ public class ReviewController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Sender currentSender = senderService.getSenderByUserId(userDetails.getId());
         Optional<Request> request = requestService.getRequest(requestId);
-
-        // check if the sender already added a review 
-        if(currentSender.getRequests().contains(reviewService.getReview(requestId).get())){
-            return ResponseEntity.ok(new MessageResponse("you already reviewed this request "));
+        // check if the request exists
+        if(!request.isPresent()){
+            return ResponseEntity.ok(new MessageResponse("Request not found"));
         }
-        //
-        if(request.isPresent()){
-             reviewService.addReview(
-            new Review(review.getComment(), review.getRating(), review.getDate(),request ));
-            return ResponseEntity.ok("Review added successfully");
+        // check if the sender is the owner of the request
+        if(!currentSender.getRequests().contains(request.get())){
+            return ResponseEntity.ok (new MessageResponse("This Request does not belong to you"));
         }
-        return new ResponseEntity<>("Request not found",HttpStatus.NOT_FOUND);
-        
+        // check if the sender already added a review to this request
+        if(reviewService.getReviewByRequestId(request.get().getId()).isPresent()){
+            return ResponseEntity.ok(new MessageResponse("You already added a review to this request"));
+        }
+        // add the review
+        Review r = new Review(review.getComment(),
+                review.getRating(),
+                Date.from(currentDateAndTime.getCurrentLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                request.get());
+        reviewService.addReview(r);
+        return ResponseEntity.ok(new MessageResponse("Review added successfully"));
        
     }
 
-    @GetMapping("/reviews/{id}")
+    /*@GetMapping("/reviews/{id}")
     public ResponseEntity<?> getReviews(@PathVariable Long id) {
         if(!reviewService.getReview(id).isPresent()){
             return new ResponseEntity<>("Review not found",HttpStatus.NOT_FOUND);
         }
         return  ResponseEntity.ok(reviewService.getReview(id));
-    }
-    @DeleteMapping("/review/{id}")
+    }*/
+    /*@DeleteMapping("/review/{id}")
     @PreAuthorize("hasRole('REGULAR') and @securityService.isTraveler()")
     public ResponseEntity<?> deleteOffer(@PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,5 +88,5 @@ public class ReviewController {
          }
          reviewService.deleteReview(id);
          return  ResponseEntity.ok("review deleted successfully");
-    }
+    }*/
 }

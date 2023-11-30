@@ -22,9 +22,9 @@ public class Review {
     private Date date;
     @OneToOne
     @JoinColumn(name = "request_id")
-    private Optional<Request> request;
+    private Request request;
 
-    public Review(String comment, Short rating, Date date, Optional<Request> request) {
+    public Review(String comment, Short rating, Date date, Request request) {
         this.comment = comment;
         this.rating = rating;
         this.date = date;

@@ -8,7 +8,7 @@ public interface ReviewService {
      Optional<Review> getReview(Long id);
      void addReview(Review r);
      void deleteReview(Long id);
-     List<Review>getReviewsByRequestId(Long id);
-   
+     Optional<Review> getReviewByRequestId(Long id);
+
 
 }

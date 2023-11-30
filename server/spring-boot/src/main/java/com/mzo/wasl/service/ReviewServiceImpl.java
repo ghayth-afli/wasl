@@ -32,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<Review> getReviewsByRequestId(Long id) {
-       return reviewRepositroy.findAll();
+    public Optional<Review> getReviewByRequestId(Long id) {
+       return reviewRepositroy.findByRequestId(id);
     }
 }
