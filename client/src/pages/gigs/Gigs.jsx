@@ -5,6 +5,7 @@ import GigCard from "../../components/gigCard/GigCard";
 import { hosts } from "../../const.js";
 
 function Gigs() {
+  window.scrollTo(0, 0);
   const [sort, setSort] = useState("sales");
   const [open, setOpen] = useState(false);
   const [gigs, setGigs] = useState([]);
