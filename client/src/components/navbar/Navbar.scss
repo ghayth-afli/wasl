@@ -9,15 +9,15 @@
   top: 0;
   z-index: 999;
   transition: 0.5s all ease;
-
+  height: 85px;
   &.active {
-    background-color: white;
-    color: black;
+    background-color: #042f04;
+    color: white;
 
     button {
       background-color: white !important;
-      color: #1dbf73 !important;
-      border: 1px solid #1dbf73 !important;
+      color: #136c13 !important;
+      border: 1px solid #136c13 !important;
     }
   }
 
@@ -36,7 +36,7 @@
 
       .dot {
         font-weight: bold;
-        color: #1dbf73;
+        color: #136c13;
       }
     }
     .links {
@@ -96,8 +96,8 @@
         cursor: pointer;
 
         &:hover {
-          background-color: #1dbf73;
-          border-color: #1dbf73;
+          background-color: #136c13;
+          border-color: #136c13;
         }
       }
     }
