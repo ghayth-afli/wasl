@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from "react";
+import { React, useState, useEffect } from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -21,7 +21,7 @@ import Link from "@mui/joy/Link";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
-
+import { toast } from "react-toastify";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
@@ -49,7 +49,6 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function MyProfile() {
-
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -125,12 +124,36 @@ export default function MyProfile() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify({
-          ...user, image: url
+          ...user,
+          image: user.image || url,
         }),
       });
       const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      toast.success("🥳Updated profile !", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       setUser(data);
     } catch (err) {
+      toast.error("😨 Couldnt update profile - checkout out later!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       console.log("err", err);
     }
   };
@@ -236,7 +259,8 @@ export default function MyProfile() {
               >
                 <img
                   src={
-                   user?.image ||  "https://res.cloudinary.com/dlxlpazb7/image/upload/v1700916977/wasl/noavatar_xvf6ez.png"
+                    user?.image ||
+                    "https://res.cloudinary.com/dlxlpazb7/image/upload/v1700916977/wasl/noavatar_xvf6ez.png"
                   }
                   loading="lazy"
                   alt=""
@@ -385,4 +409,3 @@ export default function MyProfile() {
     </Box>
   );
 }
-

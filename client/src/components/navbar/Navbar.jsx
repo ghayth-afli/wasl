@@ -79,7 +79,7 @@ function Navbar() {
     currentUser = user;
   } else {
     currentUser = null;
-    navigate("/login");
+    // navigate("/login");
   }
 
   return (

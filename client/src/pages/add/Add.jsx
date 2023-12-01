@@ -15,22 +15,34 @@ import { Link, useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const Add = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
+  const notifySuceess = () =>
+    toast.success("🦄  Offer created !", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  const notifyError = () =>
+    toast.error("🦄 Offer not created — check it out again!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
 
   const [formValues, setFormValues] = useState({
     title: "",
@@ -100,39 +112,39 @@ const Add = () => {
         }),
       });
       if (!response.ok) {
-        setError(true);
         window.scrollTo(0, 0);
         throw new Error("HTTP error " + response.status);
       }
 
       await response.json();
-
-      setError(false);
+      toast.success("👌 Offer created !", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       window.scrollTo(0, 0);
     } catch (error) {
+      toast.error("😰 Offer not created — check it out again!", {
+        position: "top-right",
+        autoClose: 10000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       console.log("Fetch error:", error);
-      setError(true);
     }
   };
 
   return (
     <>
-      {error === true && (
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          Offer not created — <strong>check it out again!</strong>
-        </Alert>
-      )}
-      {error === false && (
-        <Alert severity="success">
-          <AlertTitle>Success</AlertTitle>
-          Offer created —{" "}
-          <strong>
-            {" "}
-            <Link to="/mygigs">check it out!</Link>{" "}
-          </strong>
-        </Alert>
-      )}
       <form onSubmit={handleSubmit}>
         <div className="add">
           <div className="container">
