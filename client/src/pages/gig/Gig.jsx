@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Slider } from "infinite-react-carousel/lib";
-import Alert from '@mui/material/Alert';
 import { hosts } from "../../const";
 import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 import "./Gig.scss";
 
 function Gig() {
-
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [item, setItem] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,13 +25,16 @@ function Gig() {
         return res.json();
       })
       .then((data) => {
+        if (data.error) {
+          setUser(null);
+          return;
+        }
         setUser(data);
       })
       .catch((err) => {
         setUser(null);
       });
   }, []);
-
 
   useEffect(() => {
     fetch(`${hosts.backend}/api/offers/${id}`, {
@@ -53,55 +54,90 @@ function Gig() {
   }, []);
 
   const submitOffer = () => {
+    console.log("user", user);
     if (!user) {
-      alert("You need to login first");
-      
-    }
-    else {
-      axios.post(`${hosts.backend}/api/offers/${id}/checkout/hosted`, {
-        description: item.description,
-        weight: item.price,
-      }, {
-        headers: {
-          "Content-Type": "Application/json ; charset=UTF-8",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
+      toast.warn("You need to login first!", {
+        position: "bottom-right",
+        autoClose: 15000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    } else {
+      axios
+        .post(
+          `${hosts.backend}/api/offers/${id}/checkout/hosted`,
+          {
+            description: item.description,
+            weight: item.price,
+          },
+          {
+            headers: {
+              "Content-Type": "Application/json ; charset=UTF-8",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
         .then((res) => {
           console.log(res);
           return res;
         })
         .then((data) => {
+          toast.success("🥳 Redirecting to payment !", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
           console.log("data", data.data);
           window.location.href = data.data;
         })
         .catch((err) => {
           console.log(err);
+          toast.error("😨 Couldnt confirm order - checkout out later!", {
+            position: "bottom-right",
+            autoClose: 10000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         });
-      
     }
-  }
- 
+  };
+
   if (!item) {
+    toast("🤗 Getting your data ready!", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
     return null;
   }
 
   return (
-    
     <div className="gig">
-      
-    
-     
       <div className="container">
         <div className="left">
           <span className="breadcrumbs"> Transportation offer </span>
           <h1>{item.title}</h1>
           <div className="user">
-            <img
-              className="pp"
-              src={item.image}
-              alt=""
-            />
+            <img className="pp" src={item.image} alt="" />
             <span>{item.traveler?.user.username}</span>
             <div className="stars">
               <img src="/img/star.png" alt="" />
@@ -116,16 +152,11 @@ function Gig() {
             <img src={item.image} alt="" />
           </Slider>
           <h2>About This Gig</h2>
-          <p>
-           {item.description}
-          </p>
+          <p>{item.description}</p>
           <div className="seller">
             <h2>About The Seller</h2>
             <div className="user">
-              <img
-                src={item.image}
-                alt=""
-              />
+              <img src={item.image} alt="" />
               <div className="info">
                 <span>{item.traveler?.user.username}</span>
                 <div className="stars">
@@ -305,9 +336,7 @@ function Gig() {
             <h3>{item.title}</h3>
             <h2> TND {item.price}</h2>
           </div>
-          <p>
-            {item.description}
-          </p>
+          <p>{item.description}</p>
           <div className="details">
             <div className="item">
               <img src="/img/clock.png" alt="" />
@@ -327,7 +356,6 @@ function Gig() {
               <img src="/img/greencheck.png" alt="" />
               <span>Depart {item.depart}</span>
             </div>
-          
           </div>
           <button onClick={submitOffer}>Continue</button>
         </div>
