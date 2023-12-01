@@ -82,13 +82,18 @@ function Navbar() {
     navigate("/login");
   }
 
-
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
           <Link className="link" to="/">
-            <span className="text"><img src="https://res.cloudinary.com/dlxlpazb7/image/upload/v1700930807/wasl/wasl-logo_i6trco.png" alt="" width="350px"/></span>
+            <span className="text">
+              <img
+                src="https://res.cloudinary.com/dlxlpazb7/image/upload/v1700930807/wasl/wasl-logo_i6trco.png"
+                alt=""
+                width="250px"
+              />
+            </span>
           </Link>
           {/* <span className="dot">.</span> */}
         </div>
@@ -104,8 +109,16 @@ function Navbar() {
           )}
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
-              <img src={user?.image ||  "https://res.cloudinary.com/dlxlpazb7/image/upload/v1700916977/wasl/noavatar_xvf6ez.png" } alt="user image" />
-              <span>{currentUser?.firstName + " " + currentUser?.lastName}</span>
+              <img
+                src={
+                  user?.image ||
+                  "https://res.cloudinary.com/dlxlpazb7/image/upload/v1700916977/wasl/noavatar_xvf6ez.png"
+                }
+                alt="user image"
+              />
+              <span>
+                {currentUser?.firstName + " " + currentUser?.lastName}
+              </span>
               {open && (
                 <div className="options">
                   <Link className="link" to="/profile">
