@@ -2,9 +2,12 @@ package com.mzo.wasl.controller;
 
 import com.mzo.wasl.dto.request.RequestRequest;
 import com.mzo.wasl.model.Sender;
+import com.mzo.wasl.model.Traveler;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import com.mzo.wasl.service.OfferService;
 import com.mzo.wasl.service.SenderService;
+import com.mzo.wasl.service.TravelerService;
+import com.mzo.wasl.util.CurrentDateAndTimeUtil;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -17,7 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,6 +31,10 @@ public class PaymentController {
     OfferService offerService;
     @Autowired
     SenderService senderService;
+    @Autowired
+    CurrentDateAndTimeUtil currentDateAndTime;
+    @Autowired
+    TravelerService travelerService;
     String STRIPE_API_KEY = System.getenv().get("STRIPE_API_KEY");
     @PostMapping("offers/{id}/checkout/hosted")
     @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")
@@ -37,15 +45,29 @@ public class PaymentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Sender currentSender = senderService.getSenderByUserId(userDetails.getId());
+        Traveler currentTraveler = travelerService.getTravelerByUserId(userDetails.getId());
+
+        // Check if offer exists
         if (!offerService.getOffer(id).isPresent()) {
             return ResponseEntity.ok("Offer not found");
         }
-        SessionCreateParams.Builder paramsBuilder =
 
+        /*if (offerService.getOffer(id).get().getTraveler().getId() == currentTraveler.getId()) {
+            return ResponseEntity.ok("You can't buy your own offer");
+        }*/
+
+        Map<String, String> req = new HashMap<>();
+        req.put("description", requestRequest.getDescription());
+        req.put("weight", requestRequest.getWeight().toString());
+        req.put("offerId", id.toString());
+        req.put("senderId", currentSender.getId().toString());
+
+        SessionCreateParams.Builder paramsBuilder =
         SessionCreateParams.builder()
-                .setSuccessUrl(clientBaseURL + "/success.html?session_id={CHECKOUT_SESSION_ID}")
+                .setSuccessUrl(clientBaseURL + "/success?session_id={CHECKOUT_SESSION_ID}")
                 .setCancelUrl(clientBaseURL + "/failure")
                 .setMode(SessionCreateParams.Mode.PAYMENT)
+                .putAllMetadata(req)
                 .setCustomerEmail(userDetails.getEmail());
 
         paramsBuilder.addLineItem(
@@ -68,4 +90,5 @@ public class PaymentController {
         Session session = Session.create(paramsBuilder.build());
         return ResponseEntity.ok(session.getUrl());
     }
+
 }
