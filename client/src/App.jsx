@@ -15,6 +15,7 @@ import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
 import Profile from "./pages/profile/Profile";
+import Payment from "./pages/Payment/Payment";
 
 function App() {
   const Layout = () => {
@@ -60,14 +61,17 @@ function App() {
           path: "/add",
           element: <Add />,
         },
-        { 
-          path:"edit/:id",
-          element:<Edit/>
-
+        {
+          path: "edit/:id",
+          element: <Edit />,
         },
         {
           path: "/gig/:id",
           element: <Gig />,
+        },
+        {
+          path: "/payment/:sessionId",
+          element: <Payment />,
         },
       ],
     },
