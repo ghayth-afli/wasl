@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
     "@cloudinary/react": "^1.11.2",
     "@cloudinary/url-gen": "^1.13.0",
     "@emotion/react": "^11.11.1",
@@ -21,6 +22,7 @@
     "@table-library/react-table-library": "^4.1.7",
     "@tanstack/react-query": "^4.36.1",
     "axios": "^1.6.2",
+    "framer-motion": "^10.16.12",
     "infinite-react-carousel": "^1.2.11",
     "moment": "^2.29.4",
     "react": "^18.2.0",
