@@ -69,51 +69,7 @@ function Gig() {
       });
       return;
     } else {
-      axios
-        .post(
-          `${hosts.backend}/api/offers/${id}/checkout/hosted`,
-          {
-            description: item.description,
-            weight: item.price,
-          },
-          {
-            headers: {
-              "Content-Type": "Application/json ; charset=UTF-8",
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-          return res;
-        })
-        .then((data) => {
-          toast.success("🥳 Redirecting to payment !", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-          console.log("data", data.data);
-          window.location.href = data.data;
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error("😨 Couldnt confirm order - checkout out later!", {
-            position: "bottom-right",
-            autoClose: 10000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        });
+      navigate(`/payment-form/${id}`);
     }
   };
 
