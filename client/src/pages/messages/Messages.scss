@@ -3,9 +3,8 @@
   justify-content: center;
 
   .container {
-    width: 100%;
-    max-width: 1400px;
-    padding: 50px 20px;
+    width: 1400px;
+    padding: 50px 0px;
 
     .title {
       display: flex;
@@ -54,16 +53,6 @@
           background-color: #1dbf730f;
         }
       }
-    }
-  }
-  @media (max-width: 1024px) {
-    .container {
-      padding: 50px 10px;
-    }
-  }
-  @media (max-width: 768px) {
-    .container {
-      padding: 50px 5px;
     }
   }
 }

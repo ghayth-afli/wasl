@@ -16,7 +16,7 @@ import Message from "./pages/message/Message";
 import MyGigs from "./pages/myGigs/MyGigs";
 import Profile from "./pages/profile/Profile";
 import Payment from "./pages/Payment/Payment";
-
+import NotFound from "./components/errors/NotFound";
 import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
@@ -78,6 +78,14 @@ function App() {
           element: (
             <ChakraProvider>
               <Payment />
+            </ChakraProvider>
+          ),
+        },
+        {
+          path: "*",
+          element: (
+            <ChakraProvider>
+              <NotFound />
             </ChakraProvider>
           ),
         },

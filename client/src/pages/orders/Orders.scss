@@ -5,9 +5,8 @@
   height: 600px;
 
   .container {
-    width:100% ;
-    max-width:1400px ;
-    padding: 20px ;
+    width: 1400px;
+    padding: 50px 0px;
 
     .title {
       display: flex;
@@ -20,13 +19,11 @@
         border: none;
         padding: 10px;
         cursor: pointer;
-        margin-bottom: 10px;
       }
     }
 
     table {
       width: 100%;
-      overflow-x: auto;
 
       tr {
         height: 50px;
@@ -61,14 +58,5 @@
   }
   .completed {
     color: #136c13;
-  }
-}
-@media screen and (max-width: 768px) {
-  .orders .container {
-    padding: 10px;
-  }
-
-  .orders .title button {
-    margin-bottom: 5px; 
   }
 }

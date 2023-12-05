@@ -41,7 +41,6 @@
     }
 
     .container {
-      max-width: 100%;
       width: 1400px;
       display: flex;
       align-items: center;
@@ -86,9 +85,9 @@
 
         video {
           width: 720px;
+        }
       }
     }
-   }
 
     //   &.reverse {
     //     background-color: #0d084d;
@@ -101,27 +100,20 @@
 
   .explore {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
     padding: 100px 0px;
 
     .container {
       width: 1400px;
-     
 
       h1 {
         color: #555;
-        display: flex;
-        justify-content: center;
-        
       }
 
       .items {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: auto;
         flex-wrap: wrap;
 
         .item {
@@ -161,9 +153,4 @@
       }
     }
   }
-
-}
-@media screen and (max-width: 600px) {
-  
-  
 }

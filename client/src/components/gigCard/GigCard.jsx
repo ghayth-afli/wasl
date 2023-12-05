@@ -15,12 +15,20 @@ import {
 
 export default function GigCard({ item }) {
   const linkTo = "/gig/" + item.id;
+  const date = new Date(item.date);
+  const dateWithoutTime = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  ).toLocaleDateString("fr-FR");
   return (
     <Link to={linkTo} className="link">
       <Center py={6}>
         <Box
-          maxW={"445px"}
-          w={"full"}
+          // maxW={"445px"}
+          width={"400px"}
+          height={"450px"}
+          // w={"full"}
           bg={useColorModeValue("white", "gray.900")}
           boxShadow={"2xl"}
           rounded={"md"}
@@ -51,7 +59,7 @@ export default function GigCard({ item }) {
               fontSize={"sm"}
               letterSpacing={1.1}
             >
-              {item.price}
+              {item.price + "€"}
             </Text>
             <Heading
               color={useColorModeValue("gray.700", "white")}
@@ -60,7 +68,7 @@ export default function GigCard({ item }) {
             >
               {item.title}
             </Heading>
-            <Text color={"gray.500"}>{item.description}</Text>
+            <Text color={"gray.500"}>{item.description.substring(0, 70)}</Text>
           </Stack>
           <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
             <Avatar
@@ -68,7 +76,7 @@ export default function GigCard({ item }) {
             />
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
               <Text fontWeight={600}>{item?.traveler?.user?.username}</Text>
-              <Text color={"gray.500"}>{item.date}</Text>
+              <Text color={"gray.500"}>{dateWithoutTime}</Text>
             </Stack>
           </Stack>
         </Box>
