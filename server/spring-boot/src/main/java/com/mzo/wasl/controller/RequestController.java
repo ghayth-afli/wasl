@@ -97,7 +97,7 @@ public class RequestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Sender currentSender = senderService.getSenderByUserId(userDetails.getId());
-        return ResponseEntity.ok(requestService.getRequestsByOfferId(currentSender.getId()));
+        return ResponseEntity.ok(requestService.getRequestsBySenderId(currentSender.getId()));
     }
 
     @GetMapping("/myrequests/{id}")
