@@ -132,7 +132,7 @@ function Gig() {
                 <div className="item">
                   <span className="title">From</span>
                   <span className="desc">{item.travelerCountry}</span>
-                </div>
+
 
                 <div className="item">
                   <span className="title">Languages</span>
@@ -140,7 +140,10 @@ function Gig() {
                 </div>
               </div>
               <hr />
+
               <p>{"About: " + item.travelerBio}</p>
+
+
             </div>
           </div>
           <div className="reviews">
