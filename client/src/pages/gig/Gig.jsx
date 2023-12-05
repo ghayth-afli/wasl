@@ -47,6 +47,7 @@ function Gig() {
       .then((res) => res.json())
       .then((data) => {
         setItem(data);
+        console.log("data", data);
       })
       .catch((err) => {
         console.log(err);
@@ -158,7 +159,7 @@ function Gig() {
             <div className="user">
               <img src={item.image} alt="" />
               <div className="info">
-                <span>{item.traveler?.user.username}</span>
+                <span>{item?.travelerName}</span>
                 <div className="stars">
                   <img src="/img/star.png" alt="" />
                   <img src="/img/star.png" alt="" />
@@ -174,7 +175,7 @@ function Gig() {
               <div className="items">
                 <div className="item">
                   <span className="title">From</span>
-                  <span className="desc">USA</span>
+                  <span className="desc">{item.travelerCountry}</span>
                 </div>
                 <div className="item">
                   <span className="title">Member since</span>
@@ -194,12 +195,7 @@ function Gig() {
                 </div>
               </div>
               <hr />
-              <p>
-                My name is Anna, I enjoy creating AI generated art in my spare
-                time. I have a lot of experience using the AI program and that
-                means I know what to prompt the AI with to get a great and
-                incredibly detailed result.
-              </p>
+              <p>{item.travelerBio}</p>
             </div>
           </div>
           <div className="reviews">
