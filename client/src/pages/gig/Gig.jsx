@@ -12,7 +12,7 @@ function Gig() {
   const [user, setUser] = useState(null);
   const [item, setItem] = useState([]);
   const navigate = useNavigate();
-
+  window.scrollTo(0, 0);
   useEffect(() => {
     fetch(`${hosts.backend}/api/myprofile`, {
       method: "GET",

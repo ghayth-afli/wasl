@@ -109,9 +109,7 @@ export default function Testimonials() {
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              src={
-                "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
-              }
+              src={"https://i.pravatar.cc/300"}
               name={"Ahmed Mohsen"}
               title={"Sender from Tunisia"}
             />
@@ -125,9 +123,7 @@ export default function Testimonials() {
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              src={
-                "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
-              }
+              src={"https://i.pravatar.cc/400"}
               name={"Jane Cooper"}
               title={"Traveler from Berlin"}
             />
@@ -141,9 +137,7 @@ export default function Testimonials() {
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
-              src={
-                "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
-              }
+              src={"https://i.pravatar.cc/500"}
               name={"Marshall Mccoy"}
               title={"Travler at ABC Corporation"}
             />

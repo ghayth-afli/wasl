@@ -7,6 +7,7 @@ import CatCard from "../../components/catCard/CatCard";
 import ProjectCard from "../../components/projectCard/ProjectCard";
 import { cards, projects } from "../../data";
 import Testimonials from "../../components/testimonials/Testimonials";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function Home() {
   return (
@@ -185,7 +186,11 @@ function Home() {
           </div>
         </div>
       </div>
-      <Testimonials />
+      <ChakraProvider>
+        {" "}
+        <Testimonials />
+      </ChakraProvider>
+
       <Slide slidesToShow={4} arrowsScroll={4}>
         {projects.map((card) => (
           <ProjectCard key={card.id} card={card} />

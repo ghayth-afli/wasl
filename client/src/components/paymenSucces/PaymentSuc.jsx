@@ -10,8 +10,10 @@ import {
   useColorModeValue,
   createIcon,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export default function PaymentSuc(props) {
+  const navigate = useNavigate();
   const { sessionId } = props;
   if (!sessionId) {
     window.location.href = "/orders";
@@ -53,10 +55,20 @@ export default function PaymentSuc(props) {
               _hover={{
                 bg: "green.500",
               }}
+              onClick={() => {
+                navigate("/orders");
+              }}
             >
               Go to orders page
             </Button>
-            <Button variant={"link"} colorScheme={"blue"} size={"sm"}>
+            <Button
+              variant={"link"}
+              colorScheme={"blue"}
+              size={"sm"}
+              onClick={() => {
+                navigate("/messages");
+              }}
+            >
               Go to messages
             </Button>
             <Box>

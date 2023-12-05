@@ -71,7 +71,7 @@ export default function SignUp() {
       body: JSON.stringify({
         email: data.get("email"),
         password: data.get("password"),
-        username: data.get("firstName") + " " + data.get("lastName"),
+        username: data.get("username"),
       }),
       headers: { "Content-Type": "application/json" },
     })
@@ -187,6 +187,10 @@ export default function SignUp() {
 
             <Stack gap={4} sx={{ mt: 2 }}>
               <form onSubmit={handleSubmit}>
+                <FormControl required>
+                  <FormLabel>Username</FormLabel>
+                  <Input type="text" name="username" />
+                </FormControl>
                 <FormControl required>
                   <FormLabel>Email</FormLabel>
                   <Input type="email" name="email" />

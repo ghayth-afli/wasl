@@ -107,11 +107,9 @@
       display: flex;
       // justify-content: space-between;
       flex-wrap: wrap;
-      width: calc(50% - 10px);
-      margin-bottom: 20px;
-      @media screen and (max-width :768px) {
-        width: 100%;
-      }
+      gap: 50px;
+ 
+     
     }
     
   }

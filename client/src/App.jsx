@@ -17,13 +17,17 @@ import MyGigs from "./pages/myGigs/MyGigs";
 import Profile from "./pages/profile/Profile";
 import Payment from "./pages/Payment/Payment";
 
+import { ChakraProvider } from "@chakra-ui/react";
+
 function App() {
   const Layout = () => {
     return (
       <div className="app">
         <Navbar />
         <Outlet />
-        <Footer />
+        <ChakraProvider>
+          <Footer />
+        </ChakraProvider>
       </div>
     );
   };
@@ -71,10 +75,15 @@ function App() {
         },
         {
           path: "/payment/:sessionId",
-          element: <Payment />,
+          element: (
+            <ChakraProvider>
+              <Payment />
+            </ChakraProvider>
+          ),
         },
       ],
     },
+
     {
       path: "/register",
       element: <Register />,
