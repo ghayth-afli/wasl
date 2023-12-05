@@ -22,11 +22,12 @@
   }
 
   .container {
-    width: 90%;
+    max-width: 100%;
+    width: 1400px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 10px;
+    padding: 20px 0px;
 
     .logo {
       font-size: 24px;
@@ -40,21 +41,19 @@
       }
     }
     .links {
-      display: none;
-      @media screen and (min-width: 768px) {
+      
       display: flex;
       align-items: center;
       gap: 24px;
       font-family: "Montserrat", sans-serif;
       font-weight: 500;
-      }
+      
       span {
         white-space: nowrap;
       }
 
       .user {
-        display: none;
-        @media screen and (min-width: 768px){
+       
         display: flex;
         align-items: center;
         gap: 10px;
@@ -67,7 +66,7 @@
           border-radius: 50%;
           object-fit: cover;
         }
-      }
+      
 
         .options {
           position: absolute;
@@ -120,15 +119,13 @@
     font-family: "Montserrat", sans-serif;
   }
 }
-@media screen and (min-width:992px){
-  .navbar {
-    .container {
-      .logo {
-        font-size: 34px;
-  }
-}
-  }
+@media (max-width: 600px) {
+  .menu-icon {
+    display: block;
+    cursor: pointer;
+  }}
+
 
   
-}
+
 

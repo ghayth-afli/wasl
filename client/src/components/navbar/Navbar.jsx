@@ -9,6 +9,7 @@ function Navbar() {
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(false)
   const { pathname } = useLocation();
   const [user, setUser] = useState(null);
   var currentUser;
@@ -24,6 +25,9 @@ function Navbar() {
     localStorage.removeItem("gig");
     navigate("/");
   };
+  const handleShowNavbar = () => {
+    setShowNavbar(!showNavbar)
+  }
 
   useEffect(() => {
     window.addEventListener("scroll", isActive);
@@ -97,6 +101,10 @@ function Navbar() {
           </Link>
           {/* <span className="dot">.</span> */}
         </div>
+        <div className="menu-icon" onClick={handleShowNavbar}>
+        
+        </div>
+        <div className={`nav-elements  ${showNavbar && 'active'}`}></div>
         <div className="links">
           <Link className="link" to="/gigs">
             <span>Explore</span>
