@@ -18,6 +18,7 @@ import Profile from "./pages/profile/Profile";
 import Payment from "./pages/Payment/Payment";
 import NotFound from "./components/errors/NotFound";
 import { ChakraProvider } from "@chakra-ui/react";
+import PaymentForm from "./components/paymenSucces/PaymentForm";
 
 function App() {
   const Layout = () => {
@@ -103,6 +104,14 @@ function App() {
     {
       path: "/profile",
       element: <Profile />,
+    },
+    {
+      path: "/payment-form/:id",
+      element: (
+        <ChakraProvider>
+          <PaymentForm />
+        </ChakraProvider>
+      ),
     },
   ]);
 
