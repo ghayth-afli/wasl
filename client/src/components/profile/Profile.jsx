@@ -32,6 +32,7 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import CountrySelector from "./ContrySelector.jsx";
+import { useNavigate } from "react-router-dom";
 import { hosts } from "../../const.js";
 
 import axios from "axios";
@@ -49,6 +50,11 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function MyProfile() {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+  if (!token) {
+    navigate("/login");
+  }
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -75,10 +81,12 @@ export default function MyProfile() {
         return res.json();
       })
       .then((data) => {
+        console.log("data", data);
         setUser(data);
       })
       .catch((err) => {
         setUser(null);
+        navigate("/login");
       });
   }, []);
 
