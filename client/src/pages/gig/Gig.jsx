@@ -47,7 +47,6 @@ function Gig() {
       .then((res) => res.json())
       .then((data) => {
         setItem(data);
-        console.log("data", data);
       })
       .catch((err) => {
         console.log(err);
@@ -69,6 +68,20 @@ function Gig() {
       });
       return;
     } else {
+      //  check if user is traveler
+      if (item.travelerEmail == user.user.email) {
+        toast.info("🤗 You can't buy your own offer!", {
+          position: "bottom-right",
+          autoClose: 15000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
+      }
       navigate(`/payment-form/${id}`);
     }
   };
@@ -94,7 +107,7 @@ function Gig() {
           <span className="breadcrumbs"> Transportation offer </span>
           <h1>{item.title}</h1>
           <div className="user">
-            <img className="pp" src={item.image} alt="" />
+            <img className="pp" src={item?.travelerImage} alt="" />
             <span>{item.traveler?.user.username}</span>
             <div className="stars">
               <img src="/img/star.png" alt="" />
@@ -113,7 +126,7 @@ function Gig() {
           <div className="seller">
             <h2>About The Seller</h2>
             <div className="user">
-              <img src={item.image} alt="" />
+              <img src={item?.travelerImage} alt="" />
               <div className="info">
                 <span>{item?.travelerName}</span>
                 <div className="stars">
