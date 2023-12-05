@@ -67,6 +67,19 @@ function Gig() {
         theme: "dark",
       });
       return;
+    }
+    if (user.traveler) {
+      toast.info("🤗 Switch to sender first!", {
+        position: "bottom-right",
+        autoClose: 15000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
     } else {
       //  check if user is traveler
       if (item.travelerEmail == user.user.email) {
