@@ -3,14 +3,9 @@ package com.mzo.wasl.controller;
 import com.mzo.wasl.dto.request.OfferRequest;
 import com.mzo.wasl.dto.response.MessageResponse;
 import com.mzo.wasl.dto.response.OfferWithTravelerDetailsResponse;
-import com.mzo.wasl.model.Offer;
-import com.mzo.wasl.model.Profile;
-import com.mzo.wasl.model.Traveler;
+import com.mzo.wasl.model.*;
 import com.mzo.wasl.security.services.UserDetailsImpl;
-import com.mzo.wasl.service.OfferService;
-import com.mzo.wasl.service.ProfileService;
-import com.mzo.wasl.service.TravelerService;
-import com.mzo.wasl.service.UserService;
+import com.mzo.wasl.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -31,6 +29,9 @@ public class OfferController {
     ProfileService profileService;
     @Autowired
     UserService userService;
+    @Autowired
+    ReviewService reviewService;
+
     @GetMapping("/offers")
     public ResponseEntity<?> getAllOffers() {
         return ResponseEntity.ok(offerService.getAllOffers());
@@ -51,6 +52,12 @@ public class OfferController {
             return ResponseEntity.ok(new MessageResponse("Offer not found"));
         }
         Profile profileTraveler = profileService.getProfileByUserId(offerService.getOffer(id).get().getTraveler().getUser().getId());
+
+        List<Review> reviews = new ArrayList<>() ;
+        for (Request request: offerService.getOffer(id).get().getRequests()) {
+            reviews.add(reviewService.getReviewByRequestId(request.getId()).get());
+        }
+
         OfferWithTravelerDetailsResponse offerWithTravelerDetailsResponse= new OfferWithTravelerDetailsResponse(
                 offerService.getOffer(id).get().getId(),
                 offerService.getOffer(id).get().getTitle(),
@@ -69,7 +76,9 @@ public class OfferController {
                 profileTraveler.getPhoneNumber(),
                 profileTraveler.getCountry(),
                 profileTraveler.getLanguage(),
-                profileTraveler.getBio()
+                profileTraveler.getBio(),
+                profileTraveler.getImage(),
+                reviews
         );
         return ResponseEntity.ok(offerWithTravelerDetailsResponse);
     }

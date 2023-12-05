@@ -1,5 +1,6 @@
 package com.mzo.wasl.dto.response;
 
+import com.mzo.wasl.model.Review;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -30,4 +33,6 @@ public class OfferWithTravelerDetailsResponse {
     private String travelerCountry;
     private String travelerLanguage;
     private String travelerBio;
+    private String travelerImage;
+    private List<Review> reviews;
 }
