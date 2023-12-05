@@ -52,9 +52,9 @@ public class PaymentController {
             return ResponseEntity.ok("Offer not found");
         }
 
-        /*if (offerService.getOffer(id).get().getTraveler().getId() == currentTraveler.getId()) {
+        if (offerService.getOffer(id).get().getTraveler().getId() == currentTraveler.getId()) {
             return ResponseEntity.ok("You can't buy your own offer");
-        }*/
+        }
 
         Map<String, String> req = new HashMap<>();
         req.put("description", requestRequest.getDescription());
