@@ -8,7 +8,6 @@ function MyGigs() {
   const navigate = useNavigate();
   const [offers, setOffers] = React.useState([]);
   const [currentUser, setUser] = React.useState(null);
-
   useEffect(() => {
     fetch(`${hosts.backend}/api/myprofile`, {
       method: "GET",
@@ -33,7 +32,7 @@ function MyGigs() {
   }, []);
 
   const offersFetching = () => {
-    fetch(`${hosts.backend}/api/offers`, {
+    fetch(`${hosts.backend}/api/myoffers`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
