@@ -13,6 +13,4 @@ public class ReviewRequest {
     private String comment;
     @NotBlank
     private Short rating;
-    @NotBlank
-    private Date date;
 }

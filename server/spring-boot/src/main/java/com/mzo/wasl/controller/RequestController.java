@@ -37,7 +37,7 @@ public class RequestController {
     CurrentDateAndTimeUtil currentDateAndTime;
     @Autowired
     TravelerService travelerService;
-    @PostMapping("/offers/{id}/requests")
+    /*@PostMapping("/offers/{id}/requests")
     @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")
     public ResponseEntity<?> submitRequest(@Valid @RequestBody RequestRequest requestRequest, @PathVariable Long id){
 
@@ -89,7 +89,7 @@ public class RequestController {
         offerService.addOffer(o);
 
         return ResponseEntity.ok(new MessageResponse("Request submitted successfully!"));
-    }
+    }*/
 
     @GetMapping("/myrequests")
     @PreAuthorize("hasRole('REGULAR') and !@securityService.isTraveler()")

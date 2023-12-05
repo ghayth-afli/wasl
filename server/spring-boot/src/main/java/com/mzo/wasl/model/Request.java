@@ -50,4 +50,5 @@ public class Request {
         this.offer = offer;
         this.sender=sender;
     }
+
 }
