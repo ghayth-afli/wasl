@@ -2,11 +2,15 @@ package com.mzo.wasl.controller;
 
 import com.mzo.wasl.dto.request.OfferRequest;
 import com.mzo.wasl.dto.response.MessageResponse;
+import com.mzo.wasl.dto.response.OfferWithTravelerDetailsResponse;
 import com.mzo.wasl.model.Offer;
+import com.mzo.wasl.model.Profile;
 import com.mzo.wasl.model.Traveler;
 import com.mzo.wasl.security.services.UserDetailsImpl;
 import com.mzo.wasl.service.OfferService;
+import com.mzo.wasl.service.ProfileService;
 import com.mzo.wasl.service.TravelerService;
+import com.mzo.wasl.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +27,10 @@ public class OfferController {
     OfferService offerService;
     @Autowired
     TravelerService travelerService;
-
+    @Autowired
+    ProfileService profileService;
+    @Autowired
+    UserService userService;
     @GetMapping("/offers")
     public ResponseEntity<?> getAllOffers() {
         return ResponseEntity.ok(offerService.getAllOffers());
@@ -43,7 +50,28 @@ public class OfferController {
         if (!offerService.getOffer(id).isPresent()) {
             return ResponseEntity.ok(new MessageResponse("Offer not found"));
         }
-        return ResponseEntity.ok(offerService.getOffer(id));
+        Profile profileTraveler = profileService.getProfileByUserId(offerService.getOffer(id).get().getTraveler().getUser().getId());
+        OfferWithTravelerDetailsResponse offerWithTravelerDetailsResponse= new OfferWithTravelerDetailsResponse(
+                offerService.getOffer(id).get().getId(),
+                offerService.getOffer(id).get().getTitle(),
+                offerService.getOffer(id).get().getDescription(),
+                offerService.getOffer(id).get().getDepart(),
+                offerService.getOffer(id).get().getDestination(),
+                offerService.getOffer(id).get().getDate(),
+                offerService.getOffer(id).get().getTime(),
+                offerService.getOffer(id).get().getPrice(),
+                offerService.getOffer(id).get().getCapacity(),
+                offerService.getOffer(id).get().getRemainingCapacity(),
+                offerService.getOffer(id).get().getImage(),
+                offerService.getOffer(id).get().getTraveler().getId(),
+                profileTraveler.getFirstName()+" "+profileTraveler.getLastName(),
+                offerService.getOffer(id).get().getTraveler().getUser().getEmail(),
+                profileTraveler.getPhoneNumber(),
+                profileTraveler.getCountry(),
+                profileTraveler.getLanguage(),
+                profileTraveler.getBio()
+        );
+        return ResponseEntity.ok(offerWithTravelerDetailsResponse);
     }
 
     @PostMapping("/offers")
