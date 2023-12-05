@@ -22,7 +22,7 @@ export default function OrderState({ role, requestId, offerId }) {
   const completeBtnHandler = () => {
     console.log("complete");
     axios
-      .post(
+      .put(
         `${hosts.backend}/offers/${offerId}/requests/${requestId}/complete`,
         {},
         {
