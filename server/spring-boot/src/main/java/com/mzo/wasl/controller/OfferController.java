@@ -55,7 +55,9 @@ public class OfferController {
 
         List<Review> reviews = new ArrayList<>() ;
         for (Request request: offerService.getOffer(id).get().getRequests()) {
-            reviews.add(reviewService.getReviewByRequestId(request.getId()).get());
+            if (reviewService.getReviewByRequestId(request.getId()).isPresent()){
+                reviews.add(reviewService.getReviewByRequestId(request.getId()).get());
+            }
         }
 
         OfferWithTravelerDetailsResponse offerWithTravelerDetailsResponse= new OfferWithTravelerDetailsResponse(
