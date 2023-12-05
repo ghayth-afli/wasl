@@ -1,51 +1,78 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./GigCard.scss";
 import { Link } from "react-router-dom";
 import { hosts } from "../../const.js";
-const GigCard = ({ item }) => {
-  
- 
+import {
+  Box,
+  Center,
+  Heading,
+  Text,
+  Stack,
+  Avatar,
+  useColorModeValue,
+  Image,
+} from "@chakra-ui/react";
 
-
-  const profileImgUrl = './img/profiles/' + item.traveler.id + '.jpg';
-  const linkTo = '/gig/' + item.id;
+export default function GigCard({ item }) {
+  const linkTo = "/gig/" + item.id;
   return (
-    <Link to={linkTo} className="link" onClick={
-      () => {
-        console.log(item);
-        localStorage.setItem('gig', JSON.stringify(item));
-      }
-    }>
-      <div className="gigCard">
-        <img src={item.image} alt="" />
-        <div className="info">
-          <div className="user">
-            <img src={profileImgUrl} alt="" />
-            <span>{item.traveler.user.username}</span>
-          </div>
-          <p>{item.description}</p>
-          <div className="star">
-            <img src="./img/star.png" alt="" />
-            <span>{item.star}</span>
-          </div>
-        </div>
-        <hr />
-        <div className="detail">
-          {/* <img src="./img/heart.png" alt="" /> */}
-          <div className="delivery">
-            <span>Vers {item.destination}</span>
-          </div>
-          <div className="price">
-            <span>STARTING AT</span>
-            <h2>
-              TND {item.price}
-              <sup>99</sup>
-            </h2>
-          </div>
-        </div>
-      </div>
+    <Link to={linkTo} className="link">
+      <Center py={6}>
+        <Box
+          maxW={"445px"}
+          w={"full"}
+          bg={useColorModeValue("white", "gray.900")}
+          boxShadow={"2xl"}
+          rounded={"md"}
+          p={6}
+          overflow={"hidden"}
+        >
+          <Box
+            h={"210px"}
+            bg={"gray.100"}
+            mt={-6}
+            mx={-6}
+            mb={6}
+            pos={"relative"}
+          >
+            <Image
+              src={item.image}
+              objectFit={"cover"}
+              alt="Offer image"
+              width={"100%"}
+              height={"100%"}
+            />
+          </Box>
+          <Stack>
+            <Text
+              color={"green.500"}
+              textTransform={"uppercase"}
+              fontWeight={800}
+              fontSize={"sm"}
+              letterSpacing={1.1}
+            >
+              {item.price}
+            </Text>
+            <Heading
+              color={useColorModeValue("gray.700", "white")}
+              fontSize={"2xl"}
+              fontFamily={"body"}
+            >
+              {item.title}
+            </Heading>
+            <Text color={"gray.500"}>{item.description}</Text>
+          </Stack>
+          <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
+            <Avatar
+              src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+            />
+            <Stack direction={"column"} spacing={0} fontSize={"sm"}>
+              <Text fontWeight={600}>{item?.traveler?.user?.username}</Text>
+              <Text color={"gray.500"}>{item.date}</Text>
+            </Stack>
+          </Stack>
+        </Box>
+      </Center>
     </Link>
   );
-};
-
-export default GigCard;
+}

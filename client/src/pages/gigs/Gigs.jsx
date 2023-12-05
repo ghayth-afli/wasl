@@ -3,6 +3,7 @@ import "./Gigs.scss";
 import { gigs } from "../../data";
 import GigCard from "../../components/gigCard/GigCard";
 import { hosts } from "../../const.js";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function Gigs() {
   window.scrollTo(0, 0);
@@ -72,9 +73,11 @@ function Gigs() {
           </div>
         </div>
         <div className="cards">
-          {gigs.map((gig) => (
-            <GigCard key={gig.id} item={gig} />
-          ))}
+          <ChakraProvider>
+            {gigs.map((gig) => (
+              <GigCard key={gig.id} item={gig} />
+            ))}
+          </ChakraProvider>
         </div>
       </div>
     </div>
