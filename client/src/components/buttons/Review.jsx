@@ -30,7 +30,7 @@ function Review({ requestId }) {
   const submitReview = () => {
     axios
       .post(
-        `${hosts.backend}/request/${requestId}/review`,
+        `${hosts.backend}/api/request/${requestId}/review`,
         {
           rating: rating,
           comment: message,
