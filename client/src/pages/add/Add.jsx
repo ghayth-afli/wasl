@@ -46,13 +46,11 @@ const Add = () => {
 
   const [formValues, setFormValues] = useState({
     title: "",
-    category: "",
     description: "",
     depart: "",
     destination: "",
     date: "",
     time: "",
-    deliveryTime: "",
     capacity: "",
     price: "",
     image: "",
@@ -99,6 +97,10 @@ const Add = () => {
       });
     }
 
+    setFormValues({
+      time: formValues.time + ":00",
+    });
+
     try {
       const response = await fetch(`${hosts.backend}/api/offers`, {
         method: "POST",
@@ -109,6 +111,7 @@ const Add = () => {
         body: JSON.stringify({
           ...formValues,
           image: imageUrl,
+          time: formValues.time + ":00",
         }),
       });
       if (!response.ok) {
@@ -159,7 +162,7 @@ const Add = () => {
                   required
                   onChange={handleChange}
                 />
-                <FormControl fullWidth>
+                {/* <FormControl fullWidth>
                   <InputLabel>Category</InputLabel>
                   <Select name="category" required onChange={handleChange}>
                     <MenuItem value="clothes">Clothes</MenuItem>
@@ -167,7 +170,7 @@ const Add = () => {
                     <MenuItem value="food">Food</MenuItem>
                     <MenuItem value="meds">Meds</MenuItem>
                   </Select>
-                </FormControl>
+                </FormControl> */}
                 <InputLabel>Offer Images</InputLabel>
                 <Button
                   component="label"
@@ -230,14 +233,7 @@ const Add = () => {
                   required
                   onChange={handleChange}
                 />
-                <TextField
-                  name="deliveryTime"
-                  label="Delivery Time (e.g. 3 days)"
-                  type="number"
-                  fullWidth
-                  required
-                  onChange={handleChange}
-                />
+
                 <TextField
                   name="capacity"
                   label="Capacity"

@@ -3,6 +3,8 @@ import { hosts } from "../../const.js";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Orders.scss";
+import { ChakraProvider } from "@chakra-ui/react";
+import OrderState from "../../components/buttons/OrderState.jsx";
 
 const Orders = () => {
   const monthNames = [
@@ -20,12 +22,11 @@ const Orders = () => {
     "December",
   ];
 
-  
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [requests, setRequests] = useState([]);
   const [apiEndpoint, setApiEndpoint] = useState(null);
-
+  console.log("requests", requests);
   useEffect(() => {
     fetch(`${hosts.backend}/api/myprofile`, {
       method: "GET",
@@ -97,6 +98,7 @@ const Orders = () => {
             <th>Requested Date</th>
             {<th>{user?.traveler ? "Sender" : "Traveler"}</th>}
             <th>Contact</th>
+            <th>Order Action</th>
           </tr>
           {user &&
             user?.traveler &&
@@ -135,6 +137,16 @@ const Orders = () => {
                           alt=""
                         />
                       </td>
+                      <td width={"75px"}>
+                        {" "}
+                        <ChakraProvider>
+                          <OrderState
+                            role="traveler"
+                            requestId={request.offer.id}
+                            offerId={request.id}
+                          />
+                        </ChakraProvider>
+                      </td>
                     </tr>
                   </tbody>
                 );
@@ -145,43 +157,47 @@ const Orders = () => {
             !user?.traveler &&
             requests &&
             requests.map((item) => {
-                const request = item;
-                const gigLink = `/gig/${request.offer.id}`;
-                const date = new Date(request.startRequest);
-                const day = date.getDate();
-                const month = date.getMonth() + 1;
-                const year = date.getFullYear();
-                return (
-                  <tbody key={request.id}>
-                    <tr>
-                      <td>
-                        {" "}
-                        <Link to={gigLink}> Go to offer </Link>
-                      </td>
-                      <td>{request.offer.title}</td>
-                      <td>{request.totalPrice}</td>
-                      <td
-                        className={
-                          request.status === "PENDING" ? "pending" : "completed"
-                        }
-                      >
-                        {request.status}
-                      </td>
-                      <td>
-                        {day} {monthNames[month - 1]} {year}
-                      </td>
-                      <td>{request?.offer?.traveler.user.username}</td>
-                      <td>
-                        <img
-                          className="message"
-                          src="./img/message.png"
-                          alt=""
+              const request = item;
+              const gigLink = `/gig/${request.offer.id}`;
+              const date = new Date(request.startRequest);
+              const day = date.getDate();
+              const month = date.getMonth() + 1;
+              const year = date.getFullYear();
+              return (
+                <tbody key={request.id}>
+                  <tr>
+                    <td>
+                      {" "}
+                      <Link to={gigLink}> Go to offer </Link>
+                    </td>
+                    <td>{request.offer.title}</td>
+                    <td>{request.totalPrice}</td>
+                    <td
+                      className={
+                        request.status === "PENDING" ? "pending" : "completed"
+                      }
+                    >
+                      {request.status}
+                    </td>
+                    <td>
+                      {day} {monthNames[month - 1]} {year}
+                    </td>
+                    <td>{request?.offer?.traveler.user.username}</td>
+                    <td>
+                      <img className="message" src="./img/message.png" alt="" />
+                    </td>
+                    <td width={"75px"}>
+                      <ChakraProvider>
+                        <OrderState
+                          role="sender"
+                          requestId={request.offer.id}
+                          offerId={request.id}
                         />
-                      </td>
-                    </tr>
-                  </tbody>
-                );
-              
+                      </ChakraProvider>
+                    </td>
+                  </tr>
+                </tbody>
+              );
             })}
         </table>
       </div>
