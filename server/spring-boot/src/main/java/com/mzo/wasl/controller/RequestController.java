@@ -154,6 +154,9 @@ public class RequestController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Traveler currentTraveler = travelerService.getTravelerByUserId(userDetails.getId());
         List<Offer> offers = offerService.getOffersByTravelerId(currentTraveler.getId());
+        if (!offerService.getOffer(offer_id).isPresent()){
+            return ResponseEntity.ok(new MessageResponse("This offer does not exist!"));
+        }
         if (!offers.contains(offerService.getOffer(offer_id).get())){
             return ResponseEntity.ok(new MessageResponse("This offer does not belong to you!"));
         }

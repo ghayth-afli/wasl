@@ -27,7 +27,6 @@ const Orders = () => {
   const [user, setUser] = useState(null);
   const [requests, setRequests] = useState([]);
   const [apiEndpoint, setApiEndpoint] = useState(null);
-  console.log("requests", requests);
   useEffect(() => {
     fetch(`${hosts.backend}/api/myprofile`, {
       method: "GET",
