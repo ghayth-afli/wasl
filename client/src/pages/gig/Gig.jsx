@@ -172,6 +172,7 @@ function Gig() {
           <div className="reviews">
             {item?.reviews?.length > 0 &&
               item?.reviews?.map((review, index) => {
+                console.log("review", review);
                 return (
                   <div className="item" key={review}>
                     <h2>Reviews</h2>
@@ -182,7 +183,7 @@ function Gig() {
                         alt=""
                       />
                       <div className="info">
-                        <span>Garner David</span>
+                        <span>{review?.request.sender?.user?.username}</span>
                         <div className="country">
                           <img
                             src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
@@ -193,17 +194,19 @@ function Gig() {
                       </div>
                     </div>
                     <div className="stars">
-                      <img src="/img/star.png" alt="" />
-                      <img src="/img/star.png" alt="" />
-                      <img src="/img/star.png" alt="" />
-                      <img src="/img/star.png" alt="" />
-                      <img src="/img/star.png" alt="" />
-                      <span>{review.rating}</span>
+                      {[...Array(review.rating)].map((star, index) => {
+                        return <img key={index} src="/img/star.png" alt="" />;
+                      })}
                     </div>
                     <p>{review.comment}</p>
                     <div className="helpful">
                       <span>Helpful?</span>
-                      <img src="/img/like.png" alt="" width={"50px"} />
+                      <img
+                        src="/img/like.png"
+                        alt=""
+                        width={"50px"}
+                        height={"50px"}
+                      />
                       <span>Yes</span>
                       <img src="/img/dislike.png" alt="" width={"50px"} />
                       <span>No</span>
