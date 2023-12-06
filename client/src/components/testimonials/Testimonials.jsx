@@ -102,12 +102,10 @@ export default function Testimonials() {
         >
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Sender's Testimonial</TestimonialHeading>
+              <TestimonialHeading>Efficient Collaborating</TestimonialHeading>
               <TestimonialText>
-                "Sending gifts to my family overseas was always a hassle until I
-                found Wasl. The chat feature made it easy to communicate with
-                the traveler, and the entire process was smooth. My gifts
-                arrived on time and in perfect condition. Highly recommended!"
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor
+                neque sed imperdiet nibh lectus feugiat nunc sem.
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
@@ -118,12 +116,10 @@ export default function Testimonials() {
           </Testimonial>
           <Testimonial>
             <TestimonialContent>
-              <TestimonialHeading>Mindblowing Service</TestimonialHeading>
+              <TestimonialHeading>Intuitive Design</TestimonialHeading>
               <TestimonialText>
-                "As a frequent traveler, joining Wasl was a game-changer. The
-                platform's user-friendly interface and secure payment system
-                gave me peace of mind. Chatting with senders before the trip
-                allowed me to understand their needs better. Great experience!"
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor
+                neque sed imperdiet nibh lectus feugiat nunc sem.
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
@@ -136,17 +132,14 @@ export default function Testimonials() {
             <TestimonialContent>
               <TestimonialHeading>Mindblowing Service</TestimonialHeading>
               <TestimonialText>
-                "I've used Wasl multiple times, and each
-                experience has been fantastic. The chat feature made
-                coordinating deliveries a breeze. The travelers were punctual,
-                and my packages arrived safely. I appreciate the efficiency and
-                reliability of this service."
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor
+                neque sed imperdiet nibh lectus feugiat nunc sem.
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
               src={"https://i.pravatar.cc/500"}
               name={"Marshall Mccoy"}
-              title={"Sender at ABC Corporation"}
+              title={"Travler at ABC Corporation"}
             />
           </Testimonial>
         </Stack>
