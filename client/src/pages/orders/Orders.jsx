@@ -27,6 +27,7 @@ const Orders = () => {
   const [user, setUser] = useState(null);
   const [requests, setRequests] = useState([]);
   const [apiEndpoint, setApiEndpoint] = useState(null);
+  console.log("requests", requests);
   useEffect(() => {
     fetch(`${hosts.backend}/api/myprofile`, {
       method: "GET",
@@ -143,8 +144,8 @@ const Orders = () => {
                         <ChakraProvider>
                           <OrderState
                             role="traveler"
-                            requestId={request.offer.id}
-                            offerId={request.id}
+                            offerId={request.offer.id}
+                            requestId={request.id}
                           />
                         </ChakraProvider>
                       </td>
@@ -191,8 +192,8 @@ const Orders = () => {
                       <ChakraProvider>
                         <OrderState
                           role="sender"
-                          requestId={request.offer.id}
-                          offerId={request.id}
+                          offerId={request.offer.id}
+                          requestId={request.id}
                         />
                       </ChakraProvider>
                     </td>
