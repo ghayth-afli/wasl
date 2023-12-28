@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "./Orders.scss";
 import { ChakraProvider } from "@chakra-ui/react";
 import OrderState from "../../components/buttons/OrderState.jsx";
+import Review from "../../components/buttons/Review.jsx";
 
 const Orders = () => {
   const monthNames = [
@@ -99,6 +100,7 @@ const Orders = () => {
             {<th>{user?.traveler ? "Sender" : "Traveler"}</th>}
             <th>Contact</th>
             <th>Order Action</th>
+            <th>Review</th>
           </tr>
           {user &&
             user?.traveler &&
@@ -142,8 +144,8 @@ const Orders = () => {
                         <ChakraProvider>
                           <OrderState
                             role="traveler"
-                            requestId={request.offer.id}
-                            offerId={request.id}
+                            offerId={request.offer.id}
+                            requestId={request.id}
                           />
                         </ChakraProvider>
                       </td>
@@ -190,9 +192,14 @@ const Orders = () => {
                       <ChakraProvider>
                         <OrderState
                           role="sender"
-                          requestId={request.offer.id}
-                          offerId={request.id}
+                          offerId={request.offer.id}
+                          requestId={request.id}
                         />
+                      </ChakraProvider>
+                    </td>
+                    <td>
+                      <ChakraProvider>
+                        <Review requestId={request.id} />
                       </ChakraProvider>
                     </td>
                   </tr>

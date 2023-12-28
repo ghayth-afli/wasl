@@ -22,8 +22,8 @@ export default function OrderState({ role, requestId, offerId }) {
   const completeBtnHandler = () => {
     console.log("complete");
     axios
-      .post(
-        `${hosts.backend}/offers/${offerId}/requests/${requestId}/complete`,
+      .put(
+        `${hosts.backend}/api/offers/${offerId}/requests/${requestId}/complete`,
         {},
         {
           headers: {
@@ -62,7 +62,7 @@ export default function OrderState({ role, requestId, offerId }) {
     console.log("cancel");
     axios
       .put(
-        `${hosts.backend}/offers/${offerId}/requests/${requestId}/cancel`,
+        `${hosts.backend}/api/offers/${offerId}/requests/${requestId}/cancel`,
         {},
         {
           headers: {
