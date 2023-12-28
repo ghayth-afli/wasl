@@ -68,7 +68,7 @@ export default function GigCard({ item }) {
             >
               {item.title}
             </Heading>
-            <Text color={"gray.500"}>{item.description.substring(0, 70)}</Text>
+            <Text color={"gray.500"}>{item ? item.description : "zfzefzgz"}</Text>
           </Stack>
           <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
             <Avatar
