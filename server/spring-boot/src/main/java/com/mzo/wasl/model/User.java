@@ -3,6 +3,8 @@ package com.mzo.wasl.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
@@ -31,7 +33,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
+    @OneToMany(fetch=FetchType.LAZY,mappedBy = "user")
+    private List<Ticket> tickets;
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
