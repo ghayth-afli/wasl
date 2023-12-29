@@ -32,6 +32,7 @@ public class SupportController {
         return ResponseEntity.ok(supportService.getAllSupports());
     }
 
+    // Create new support
     @PostMapping("/supports")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createSupport(@RequestBody SupportRequest support) {
@@ -57,6 +58,7 @@ public class SupportController {
         return ResponseEntity.ok(new MessageResponse("Client Support registered successfully!"));
     }
 
+    // Delete support
     @DeleteMapping("/supports/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteSupport(@PathVariable Long id) {
@@ -70,6 +72,7 @@ public class SupportController {
         return ResponseEntity.ok(new MessageResponse("Support deleted successfully!"));
     }
 
+    // Update support
     @PutMapping("/supports/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateSupport(@PathVariable Long id, @RequestBody SupportRequest supportRequest) {
@@ -83,5 +86,16 @@ public class SupportController {
         user.setPassword(encoder.encode(supportRequest.getPassword()));
         userService.addUser(user);
         return ResponseEntity.ok(new MessageResponse("Support updated successfully!"));
+    }
+
+    // Get support by id
+    @GetMapping("/supports/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getSupportById(@PathVariable Long id) {
+        Optional<Support> support = supportService.getSupportById(id);
+        if (!support.isPresent()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Support not found!"));
+        }
+        return ResponseEntity.ok(support.get().getUser());
     }
 }
