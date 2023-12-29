@@ -1,8 +1,13 @@
 package com.mzo.wasl.security;
 
+import com.mzo.wasl.model.ERole;
+import com.mzo.wasl.model.Role;
+import com.mzo.wasl.model.User;
 import com.mzo.wasl.security.jwt.AuthEntryPointJwt;
 import com.mzo.wasl.security.jwt.AuthTokenFilter;
 import com.mzo.wasl.security.services.UserDetailsServiceImpl;
+import com.mzo.wasl.service.RoleService;
+import com.mzo.wasl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +31,10 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
+    @Autowired
+    UserService userService;
+    @Autowired
+    RoleService roleService;
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -52,7 +61,16 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
+    @Bean
+        public void createAdminUser() {
+            if (!userService.existsByUsername("admin")) {
+                User user = new User("admin", "admin@mail.com", passwordEncoder().encode("admin"));
+                Role userRole = roleService.getRoleByName(ERole.ROLE_ADMIN)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                user.setRole(userRole);
+                userService.addUser(user);
+            }
+        }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
