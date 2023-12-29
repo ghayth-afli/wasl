@@ -61,6 +61,7 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    //create admin user if not exists
     @Bean
         public void createAdminUser() {
             if (!userService.existsByUsername("admin")) {
