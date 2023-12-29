@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> getAllRegulars() {
         //get all users with role REGULAR
-        return userRepository.findAllByRole(ERole.ROLE_REGULAR.toString());
+        return userRepository.findAllByRole(ERole.ROLE_REGULAR);
+    }
+
+    @Override
+    public List<User> getAllSupports() {
+        return userRepository.findAllByRole(ERole.ROLE_SUPPORT);
     }
 }

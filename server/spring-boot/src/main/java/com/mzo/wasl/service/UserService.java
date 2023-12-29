@@ -13,4 +13,5 @@ public interface UserService {
     Optional<User> getUserById(Long id);
     void deleteUser(Long id);
     List<User> getAllRegulars();
+    List<User> getAllSupports();
 }
