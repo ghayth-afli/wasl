@@ -1,6 +1,7 @@
 package com.mzo.wasl.repository;
 
 import com.mzo.wasl.model.ERole;
+import com.mzo.wasl.model.Role;
 import com.mzo.wasl.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,5 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Boolean existsByEmail(String email);
 
     Optional<User> findByEmail(String email);
-    List<User> findAllByRole(ERole role);
+    List<User> findAllByRole(Role role);
 }

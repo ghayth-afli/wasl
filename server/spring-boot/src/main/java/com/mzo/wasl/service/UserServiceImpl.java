@@ -1,6 +1,7 @@
 package com.mzo.wasl.service;
 
 import com.mzo.wasl.model.ERole;
+import com.mzo.wasl.model.Role;
 import com.mzo.wasl.model.User;
 import com.mzo.wasl.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    RoleService roleService;
     @Override
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
@@ -47,11 +49,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> getAllRegulars() {
         //get all users with role REGULAR
-        return userRepository.findAllByRole(ERole.ROLE_REGULAR);
+        Role role = roleService.getRoleByName(ERole.ROLE_REGULAR).get();
+        roleService.getRoleByName(ERole.ROLE_REGULAR);
+        return userRepository.findAllByRole(role);
     }
 
     @Override
     public List<User> getAllSupports() {
-        return userRepository.findAllByRole(ERole.ROLE_SUPPORT);
+        Role role = roleService.getRoleByName(ERole.ROLE_SUPPORT).get();
+        return userRepository.findAllByRole(role);
     }
 }

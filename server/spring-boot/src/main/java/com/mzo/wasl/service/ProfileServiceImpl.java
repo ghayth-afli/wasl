@@ -5,6 +5,8 @@ import com.mzo.wasl.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProfileServiceImpl implements ProfileService{
     @Autowired
@@ -22,4 +24,10 @@ public class ProfileServiceImpl implements ProfileService{
     public void addProfile(Profile profile) {
         profileRepository.save(profile);
     }
+
+    @Override
+    public List<Profile> getAllProfiles() {
+        return profileRepository.findAll();
+    }
+
 }
