@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,6 +29,8 @@ public class TicketController {
     UserService userService;
     @Autowired
     SupportService supportService;
+
+    //get all tickets for admin and support
     @GetMapping("/tickets")
     @PreAuthorize("hasRole('SUPPORT') or hasRole('ADMIN')")
     public ResponseEntity<?> getAllTickets(){
@@ -39,8 +42,50 @@ public class TicketController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User currentUser = userService.getUserById(userDetails.getId()).get();
-        return ResponseEntity.ok(ticketService.getTicketByUserId(currentUser.getId()).get());
+        return ResponseEntity.ok(ticketService.getTicketsByUserId(currentUser.getId()));
     }
+
+    //get ticket by id for regular user
+    @GetMapping("/mytickets/{id}")
+    @PreAuthorize("hasRole('REGULAR')")
+    public ResponseEntity<?> getMyTicketById(@PathVariable("id") Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User currentUser = userService.getUserById(userDetails.getId()).get();
+        List<Ticket> tickets = ticketService.getTicketsByUserId(currentUser.getId());
+        Optional<Ticket> ticket = ticketService.getTicketById(id);
+        if(!tickets.contains(ticket.get())){
+            return ResponseEntity.badRequest().body("Ticket not found");
+        }
+        return ResponseEntity.ok(ticket);
+    }
+
+    //get all tickets for support
+    @GetMapping("/allmychosentickets")
+    @PreAuthorize("hasRole('SUPPORT')")
+    public ResponseEntity<?> getAllMyChosenTickets(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Support currentSupport = supportService.getSupportByUserId(userDetails.getId()).get();
+        return ResponseEntity.ok(ticketService.getTicketsBySupportId(currentSupport.getId()));
+    }
+
+    //get ticket by id for support
+    @GetMapping("/allmychosentickets/{id}")
+    @PreAuthorize("hasRole('SUPPORT')")
+    public ResponseEntity<?> getMyChosenTicketById(@PathVariable("id") Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Support currentSupport = supportService.getSupportByUserId(userDetails.getId()).get();
+        List<Ticket> tickets = ticketService.getTicketsBySupportId(currentSupport.getId());
+        Optional<Ticket> ticket = ticketService.getTicketById(id);
+        if(!tickets.contains(ticket.get())){
+            return ResponseEntity.badRequest().body("Ticket not found");
+        }
+        return ResponseEntity.ok(ticket);
+    }
+
+    //create ticket for regular user
     @PostMapping("/tickets")
     @PreAuthorize("hasRole('REGULAR')")
     public ResponseEntity<?> createTicket(@RequestBody TicketRequest ticketRequest){
@@ -54,6 +99,8 @@ public class TicketController {
         ticketService.createTicket(ticket);
         return ResponseEntity.ok("Ticket created successfully");
     }
+
+    //choose ticket for support
     @PutMapping("/tickets/{id}/choose")
     @PreAuthorize("hasRole('SUPPORT')")
     public ResponseEntity<?> ChooseTicket(@PathVariable("id") Long id){
@@ -69,6 +116,8 @@ public class TicketController {
         ticketService.createTicket(ticket.get());
         return ResponseEntity.ok("Ticket chosen successfully");
     }
+
+    //close ticket for support
     @PutMapping("/tickets/{id}/close")
     @PreAuthorize("hasRole('SUPPORT')")
     public ResponseEntity<?> CloseTicket(@PathVariable("id") Long id){

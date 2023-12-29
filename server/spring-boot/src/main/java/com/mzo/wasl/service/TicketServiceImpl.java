@@ -29,7 +29,12 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public Optional<Ticket> getTicketByUserId(Long userId) {
+    public List<Ticket> getTicketsByUserId(Long userId) {
         return ticketRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<Ticket> getTicketsBySupportId(Long supportId) {
+        return ticketRepository.findBySupportId(supportId);
     }
 }
