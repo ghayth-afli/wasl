@@ -17,4 +17,5 @@ public interface RequestService {
     void deleteRequest(Long id);
 
     List<Request> getRequestsBySenderId(Long senderId);
+    List<Request> getAllRequests();
 }

@@ -43,4 +43,9 @@ public class RequestServiceImpl implements RequestService{
         return requestRepository.findRequestsBySenderId(senderId);
     }
 
+    @Override
+    public List<Request> getAllRequests() {
+        return requestRepository.findAll();
+    }
+
 }

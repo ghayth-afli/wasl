@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,20 +28,22 @@ public class RegularController {
     public ResponseEntity<?> getAllRegulars() {
         List<Profile> profiles = profileService.getAllProfiles();
         RegularWithProfileResponse regularWithProfileResponse = new RegularWithProfileResponse();
-        List<RegularWithProfileResponse> regulars = profiles.stream().map((p) -> {
-            regularWithProfileResponse.setId(p.getUser().getId());
-            regularWithProfileResponse.setUsername(p.getUser().getUsername());
-            regularWithProfileResponse.setEmail(p.getUser().getEmail());
-            regularWithProfileResponse.setFirstName(p.getFirstName());
-            regularWithProfileResponse.setLastName(p.getLastName());
-            regularWithProfileResponse.setBio(p.getBio());
-            regularWithProfileResponse.setCountry(p.getCountry());
-            regularWithProfileResponse.setCity(p.getCity());
-            regularWithProfileResponse.setPhoneNumber(p.getPhoneNumber());
-            regularWithProfileResponse.setLanguage(p.getLanguage());
-            regularWithProfileResponse.setImage(p.getImage());
-            return regularWithProfileResponse;
-        }).toList();
+        List<RegularWithProfileResponse> regulars = profiles.stream()
+                .map(p -> {
+                    RegularWithProfileResponse response = new RegularWithProfileResponse();
+                    response.setId(p.getUser().getId());
+                    response.setUsername(p.getUser().getUsername());
+                    response.setEmail(p.getUser().getEmail());
+                    response.setFirstName(p.getFirstName());
+                    response.setLastName(p.getLastName());
+                    response.setBio(p.getBio());
+                    response.setCountry(p.getCountry());
+                    response.setCity(p.getCity());
+                    response.setPhoneNumber(p.getPhoneNumber());
+                    response.setLanguage(p.getLanguage());
+                    response.setImage(p.getImage());
+                    return response;
+                }).toList();
         return ResponseEntity.ok(regulars);
     }
 }

@@ -1,6 +1,7 @@
 package com.mzo.wasl.controller;
 
 import com.mzo.wasl.dto.request.TicketRequest;
+import com.mzo.wasl.dto.response.MessageResponse;
 import com.mzo.wasl.model.ETicketStatus;
 import com.mzo.wasl.model.Support;
 import com.mzo.wasl.model.Ticket;
@@ -97,7 +98,7 @@ public class TicketController {
                 ticketRequest.getDescription(),
                 ETicketStatus.PENDING, currentUser);
         ticketService.createTicket(ticket);
-        return ResponseEntity.ok("Ticket created successfully");
+        return ResponseEntity.ok(new MessageResponse("Ticket created successfully"));
     }
 
     //choose ticket for support
