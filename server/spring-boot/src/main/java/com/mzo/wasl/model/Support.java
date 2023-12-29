@@ -21,4 +21,8 @@ public class Support {
     private User user;
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "support")
     private List<Ticket> tickets;
+
+    public Support(User user) {
+        this.user = user;
+    }
 }
