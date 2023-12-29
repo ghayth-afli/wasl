@@ -1,10 +1,12 @@
 package com.mzo.wasl.service;
 
+import com.mzo.wasl.model.ERole;
 import com.mzo.wasl.model.User;
 import com.mzo.wasl.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +42,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<User> getAllRegulars() {
+        //get all users with role REGULAR
+        return userRepository.findAllByRole(ERole.ROLE_REGULAR.toString());
     }
 }
