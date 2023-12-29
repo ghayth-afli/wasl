@@ -64,7 +64,7 @@ public class PaymentController {
 
         SessionCreateParams.Builder paramsBuilder =
         SessionCreateParams.builder()
-                .setSuccessUrl(clientBaseURL + "/success?session_id={CHECKOUT_SESSION_ID}")
+                .setSuccessUrl(clientBaseURL + "/payment/{CHECKOUT_SESSION_ID}")
                 .setCancelUrl(clientBaseURL + "/failure")
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .putAllMetadata(req)
