@@ -46,6 +46,17 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.getTicketsByUserId(currentUser.getId()));
     }
 
+    //geTicketById
+    @GetMapping("/tickets/{id}")
+    @PreAuthorize("hasRole('SUPPORT') or hasRole('ADMIN')")
+    public ResponseEntity<?> getTicketById(@PathVariable("id") Long id){
+        Optional<Ticket> ticket = ticketService.getTicketById(id);
+        if (!ticket.isPresent()){
+            return ResponseEntity.badRequest().body("Ticket not found");
+        }
+        return ResponseEntity.ok(ticket);
+    }
+
     //get ticket by id for regular user
     @GetMapping("/mytickets/{id}")
     @PreAuthorize("hasRole('REGULAR')")
